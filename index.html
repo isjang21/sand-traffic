@@ -601,8 +601,19 @@ function homeSVG(lv){
   lay.forEach(([sc,col,dy])=>{o+=`<polygon points='${poly(edge(C,1,s=>(w0+(w1-w0)*s)*sc,50).map(p=>[p[0],p[1]+dy]),edge(C,-1,s=>(w0+(w1-w0)*s)*sc,50).map(p=>[p[0],p[1]+dy]))}' fill='${col}'/>`});
   for(let j=-4;j<=4;j++){if(!j)continue;const pts=edge(C,1,s=>(w0+(w1-w0)*s)*(j/4.5),50).map(p=>[p[0],p[1]-4]);o+=`<polyline points='${pts.map(f1).join(' ')}' fill='none' stroke='rgba(255,255,255,${j<0?.22:.34})' stroke-width='${j<0?2.5:3.5}' stroke-linecap='round'/>`}
   return o};
- const riv1=ribbon([[[400,372],[330,380],[290,420],[210,432]],[[210,432],[120,444],[60,470],[-20,520]]],30,52,T.teal);
- const riv2=ribbon([[[-30,610],[40,600],[70,650],[150,690]],[[150,690],[230,730],[280,790],[330,880]]],30,56,T.teal);
+ const lanes=(SEG,w0,w1,pal)=>{const C=mk(SEG),n=pal.length;let o='';const W=s=>w0+(w1-w0)*s;
+   for(let j=0;j<n;j++){const a=-1+2*j/n,b=-1+2*(j+1)/n,wob=(f,ph)=>s=>W(s)*(f+Math.sin(s*9+ph)*.05);
+    const top=edge(C,1,wob(a,j*2),60).map(p=>[p[0],p[1]-3]),bot=edge(C,1,wob(b,j*2+2),60).map(p=>[p[0],p[1]-3]);
+    o+=`<polygon points='${poly(bot,top)}' fill='${pal[j]}'/>`;
+    const mid=edge(C,1,wob((a+b)/2,j*2+1),60).map(p=>[p[0],p[1]-5]);
+    o+=`<polyline points='${mid.map(f1).join(' ')}' fill='none' stroke='rgba(255,255,255,.28)' stroke-width='3.5' stroke-linecap='round'/>`;
+    o+=`<polyline points='${top.map(f1).join(' ')}' fill='none' stroke='rgba(0,0,0,.18)' stroke-width='2'/>`}
+   return o};
+  const PAL=['#ff5a5a','#ff9f43','#ffd93d','#5fd068','#34c3e8','#5b7cff','#b36bff'];
+  const riv1=lanes([[[400,372],[330,380],[290,420],[210,432]],[[210,432],[120,444],[60,470],[-20,520]]],30,52,PAL);
+  const riv2=lanes([[[-30,610],[40,600],[70,650],[150,690]],[[150,690],[230,730],[280,790],[330,880]]],30,56,PAL.slice().reverse());
+  const _riv1=ribbon([[[400,372],[330,380],[290,420],[210,432]],[[210,432],[120,444],[60,470],[-20,520]]],30,52,T.teal);
+ const _riv2=ribbon([[[-30,610],[40,600],[70,650],[150,690]],[[150,690],[230,730],[280,790],[330,880]]],30,56,T.teal);
  // dunes
  const dune=(d,i)=>`<path d='${d}' fill='url(#g${i})'/>`;
  const duneHi=(d)=>`<path d='${d}' fill='none' stroke='rgba(255,255,255,.55)' stroke-width='3' stroke-linecap='round'/>`;
@@ -620,14 +631,24 @@ function homeSVG(lv){
  const defs=`<linearGradient id='sk' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='${T.sky[0]}'/><stop offset='.4' stop-color='${T.sky[1]}'/></linearGradient>
  <radialGradient id='sg'><stop offset='0' stop-color='#fff' stop-opacity='.9'/><stop offset='1' stop-color='#fff' stop-opacity='0'/></radialGradient>
  <filter id='blr'><feGaussianBlur stdDeviation='1.6'/></filter>
- <filter id='nz' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='5'/><feColorMatrix type='matrix' values='0 0 0 0 .4  0 0 0 0 .28  0 0 0 0 .1  0 0 0 1.5 -.62'/></filter>
+ <filter id='grain' filterUnits='userSpaceOnUse' x='-20' y='300' width='430' height='560' color-interpolation-filters='sRGB'>
+   <feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='11' result='n'/>
+   <feDiffuseLighting in='n' surfaceScale='1.6' diffuseConstant='1.0' lighting-color='#fff' result='lt'><feDistantLight azimuth='235' elevation='52'/></feDiffuseLighting>
+   <feBlend in='SourceGraphic' in2='lt' mode='multiply' result='m0'/><feComposite in='m0' in2='SourceAlpha' operator='in' result='m'/>
+   <feComponentTransfer in='m' result='m2'><feFuncR type='linear' slope='1.22'/><feFuncG type='linear' slope='1.22'/><feFuncB type='linear' slope='1.22'/></feComponentTransfer>
+   <feTurbulence type='fractalNoise' baseFrequency='1.9' numOctaves='1' seed='3' result='n2'/>
+   <feColorMatrix in='n2' type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  14 0 0 0 -9.6' result='spark'/>
+   <feComposite in='spark' in2='SourceAlpha' operator='in' result='sp'/>
+   <feMerge><feMergeNode in='m2'/><feMergeNode in='sp'/></feMerge>
+  </filter>
+  <filter id='nz' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' seed='5'/><feColorMatrix type='matrix' values='0 0 0 0 .4  0 0 0 0 .28  0 0 0 0 .1  0 0 0 1.5 -.62'/></filter>
  ${[0,1,2,3].map(i=>`<linearGradient id='g${i}' x1='0' y1='0' x2='.35' y2='1'><stop offset='0' stop-color='${T.gold[0]}'/><stop offset='.4' stop-color='${T.gold[1]}'/><stop offset='1' stop-color='${T.gold[2]}'/></linearGradient>`).join('')}
  <linearGradient id='rd' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='${mixc(T.road,255,.18)}'/><stop offset='1' stop-color='${mixc(T.road,0,.15)}'/></linearGradient>`;
  return {defs,body:`<rect width='390' height='844' fill='url(#sk)'/><circle cx='330' cy='80' r='140' fill='url(#sg)'/>${cloud(66,186,1.15)}${cloud(310,150,.95)}${cloud(195,270,.8)}
  <path d='M-10,350 Q60,300 140,332 T290,322 T400,338 L400,480 L-10,480Z' fill='${T.far}' opacity='.9'/><path d='M120,345 Q200,310 280,340 T420,350 L420,480 L120,480Z' fill='${T.far2}' opacity='.75'/>
- ${dune(D1,0)}${duneHi(D1h)}${riv1}${dune(D2,1)}${duneHi(D2h)}${riv2}${dune(D3,2)}
+ <g filter='url(#grain)'>${dune(D1,0)}${duneHi(D1h)}${riv1}${dune(D2,1)}${duneHi(D2h)}${riv2}${dune(D3,2)}</g>
  <rect x='0' y='330' width='390' height='514' filter='url(#nz)' opacity='.42' style='mix-blend-mode:multiply'/>${sparkle}
- ${trees}
+ <g filter='url(#grain)'>${trees}</g>
  <polygon points='${poly(rE(1,2),rE(-1,2))}' fill='rgba(60,40,0,.25)'/>${curb}<polygon points='${poly(rE(1,0),rE(-1,0))}' fill='url(#rd)'/>${dash}`};
 }
 
