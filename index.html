@@ -409,7 +409,7 @@ function findSlot(n){const Cc=RL*rw,nl=trLen(n);if(!queue.length)return -.25;
   if(ok&&((rx*rw+nl/2<=0)||(rx*rw-nl/2>=rw)))return rx}
  return null}
 function entryClear(n){const Cc=1.5*rw,nl=trLen(n),e=-.25*rw;return [...queue,...out].every(t=>{const d=(((t.rx*rw-e)%Cc)+Cc)%Cc,m=(trLen(t)+nl)/2+8;return d>=m&&Cc-d>=m})}
-function frozenAt(x,y){return RT>0&&(Math.abs(x-W/2)/DA+Math.abs(y-DCY)/DB)<1}
+function frozenAt(x,y){return RT>0&&Math.hypot(x-W/2,y-DCY)/DB<1}
 function recLow(){for(let x=0;x<W;x++){let y=H-1;while(y>=0&&(!sand[y*W+x]||frozenAt(x,y)))y--;lowA[x]=y}}
 const lowA=[],lowY=x=>{const y=lowA[x];return y!==undefined&&y>=(H>>1)-5?y:-1};
 const dep=(x,y)=>{let d=0;while(y+d<H&&!sand[(y+d)*W+x]&&d<12)d++;return d};
@@ -423,7 +423,7 @@ function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;if(paused){requestA
  if(gt>1.5){gt=0;for(let x=0;x<W;x++)dirty.add(x)}
 if(dirty.size){let cur=dirty;dirty=new Set();gf^=1;
  for(let r=0;r<8&&cur.size;r++){const cols=[...cur].sort((a,b)=>gf?a-b:b-a),nxt=new Set();
-  for(const x of cols){for(let y=H-2;y>=0;y--){const i=y*W+x;if(!sand[i])continue;const dn=RT>0?(Math.abs(x-W/2)/DA+Math.abs(y-DCY)/DB):9,fz=dn<1,pf=fz?0:1;const l=x>0&&!sand[i+W-1],q=x<W-1&&!sand[i+W+1];
+  for(const x of cols){for(let y=H-2;y>=0;y--){const i=y*W+x;if(!sand[i])continue;const dn=RT>0?Math.hypot(x-W/2,y-DCY)/DB:9,fz=dn<1,pf=fz?0:1;const l=x>0&&!sand[i+W-1],q=x<W-1&&!sand[i+W+1];
    if(!sand[i+W]){if(fz)continue;if((l||q)&&!fz&&Math.random()<.04){const t=l&&q?(Math.random()<.5?-1:1):l?-1:1;sand[i+W+t]=sand[i];sand[i]="";nxt.add(x+t)}else{sand[i+W]=sand[i];sand[i]=""}nxt.add(x);moved=true;continue}
    if((l||q)&&!fz){nxt.add(x);if(Math.random()<1){let t;if(l&&q){const a=dep(x-1,y+1),b=dep(x+1,y+1);t=Math.random()<.7?(a>b?-1:b>a?1:(Math.random()<.5?-1:1)):(Math.random()<.5?-1:1)}else t=l?-1:1;const j=i+W+t;sand[j]=sand[i];sand[i]="";const x2=x+2*t,y2=y+2;if(Math.random()<.25&&x2>=0&&x2<W&&y2<H&&!sand[y2*W+x2]){sand[y2*W+x2]=sand[j];sand[j]="";nxt.add(x2)}nxt.add(x+t);moved=true}}
   }}
@@ -443,7 +443,7 @@ if(dirty.size){let cur=dirty;dirty=new Set();gf^=1;
   if(c.vis>=c.cap){queue.splice(queue.indexOf(c),1);out.push(c);if(c.cap>0){fxBurst(c);sfxFull()}}});
  out.forEach(c=>c.rx+=vsE()*dt*boostS);out=out.filter(c=>c.rx<1.3);
  if(pend.length){const sl=findSlot(pend[0]);if(sl!==null){const c=pend.shift(),hl=trLen(c)/2;c.rx=sl;c.got=0;c.vis=0;c.laps=0;c.fa=(sl*rw+hl>0&&sl*rw-hl<rw)?0:1;queue.push(c)}}
- if(took)sfxSand();if(took||ft>0)ft+=dt;{const fq=pc/tot,k=Math.min(1,fq/.6);RT=thaw||k>=1?0:1;DB=Math.max(1,H*.45*(1-k));DA=Math.max(1,W*.26*(1-k));DCY=H*.9-DB}if(took||moved){drawPic();hud()}
+ if(took)sfxSand();if(took||ft>0)ft+=dt;{const fq=pc/tot,k=Math.min(1,fq/.6);RT=thaw||k>=1?0:1;DB=Math.max(1,H*.3*(1-k));DA=DB;DCY=H*.9-DB}if(took||moved){drawPic();hud()}
  if(took)queue.forEach(c=>c.laps=0);if(!won&&!paused&&queue.length&&!moved&&!parts.length&&!cars.some(c=>c.s==1)&&queue.every(c=>(c.laps||0)>=3&&c.vis<c.cap)&&(used()>=MAXS||!canTap())){if(RT>0){thaw=true;queue.forEach(c=>c.laps=0)}else showStuck()}
  if(!won&&cars.length&&cars.every(c=>c.s==2)&&!queue.length&&!pend.length){won=true;coins+=50;refresh();$("nx").textContent="다음 레벨";const nw=markGot();$("ovt").innerHTML="클리어! 🎉<br>모래를 모두 실었어요<br>🪙 +50"+(nw?"<br>📖 도감 등록: "+ANIM[lv].n:"");$("ov").style.display="flex";winFx()}
  bx.clearRect(0,0,C*cs,R*cs);
