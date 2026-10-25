@@ -159,7 +159,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 <div id="app">
  <div id="top"><div id="pw"><canvas id="pic"></canvas></div><div id="hud"><span id="co"></span><span id="lv"></span><span id="pcn"></span></div></div>
  <canvas id="road"></canvas>
- <div id="st"><span id="sc"></span><button id="sa">＋주차장 100🪙</button></div>
+ <div id="st"><span id="sc"></span><button id="sa">＋주차장 300🪙</button></div>
  <div id="bw"><canvas id="bd"></canvas><div id="toast"></div><div id="cp"></div><div id="ov"><div id="ovt"></div><canvas id="ovc" width="130" height="100"></canvas><button id="nx">다음 레벨</button><button id="nxh">홈으로</button></div></div>
  <div id="its"><button id="it_t"></button><button id="it_m"></button><button id="it_s"></button><button id="ps">❚❚</button></div>
  <div id="ev"><div id="evt"></div><button id="ev1"></button><button id="ev2"></button><button id="ev3">처음부터 다시</button></div>
@@ -534,7 +534,7 @@ if(dirty.size){let cur=dirty;dirty=new Set();gf^=1;
  if(pend.length){const sl=findSlot(pend[0]);if(sl!==null){const c=pend.shift(),hl=trLen(c)/2;c.rx=sl;c.got=0;c.vis=0;c.laps=0;c.fa=(sl*rw+hl>0&&sl*rw-hl<rw)?0:1;queue.push(c)}}
  if(took)sfxSand();if(took||ft>0)ft+=dt;{const fq=pc/tot,k=Math.min(1,fq/.6);RT=thaw||k>=1?0:1;DB=Math.max(1,H*.45*(1-k));DA=Math.max(1,W*.26*(1-k));DCY=H*.9-DB}if(took||moved){drawPic();hud()}
  if(took)queue.forEach(c=>c.laps=0);if(!won&&!paused&&queue.length&&!moved&&!parts.length&&!cars.some(c=>c.s==1)&&queue.every(c=>(c.laps||0)>=3&&c.vis<c.cap)&&(used()>=MAXS||!canTap())){if(RT>0){thaw=true;queue.forEach(c=>c.laps=0)}else showStuck()}
- if(!won&&cars.length&&cars.every(c=>c.s==2)&&!queue.length&&!pend.length){won=true;coins+=50;refresh();$("nx").textContent="다음 레벨";const nw=markGot();$("ovt").innerHTML="클리어! 🎉<br>모래를 모두 실었어요<br>🪙 +50"+(nw?"<br>📖 도감 등록: "+ANIM[lv].n:"");{const oc=$("ovc");if(lv<PETN){oc.style.display="block";oc.getContext("2d").drawImage(artCv(lv),0,0)}else oc.style.display="none"}$("ov").style.display="flex";winFx()}
+ if(!won&&cars.length&&cars.every(c=>c.s==2)&&!queue.length&&!pend.length){won=true;coins+=100;refresh();$("nx").textContent="다음 레벨";const nw=markGot();$("ovt").innerHTML="클리어! 🎉<br>모래를 모두 실었어요<br>🪙 +100"+(nw?"<br>📖 도감 등록: "+ANIM[lv].n:"");{const oc=$("ovc");if(lv<PETN){oc.style.display="block";oc.getContext("2d").drawImage(artCv(lv),0,0)}else oc.style.display="none"}$("ov").style.display="flex";winFx()}
  bx.clearRect(0,0,C*cs,R*cs);
  bx.fillStyle="rgba(128,128,128,.12)";rr(0,0,C*cs,R*cs,12);
  cars.forEach(c=>{if(c.s<2)drawCar(c)});
@@ -543,8 +543,8 @@ if(dirty.size){let cur=dirty;dirty=new Set();gf^=1;
  requestAnimationFrame(loop)}
 const IT=[["t","🔧 집게"],["m","🧲 자석"],["s","🔀 쉐이크"]];
 function refresh(){saveSoon();$("co").textContent="🪙 "+coins;$("hco").textContent="🪙 "+coins;$("shc").textContent="🪙 "+coins;$("sc").textContent="주차장 "+used()+"/"+MAXS;IT.forEach(([k,n])=>$("it_"+k).textContent=n+" "+(items[k]>0?items[k]:"＋"))}
-function useItem(k){if(items[k]>0)items[k]--;else coins-=100;refresh()}
-function canUse(k){if(items[k]>0||coins>=100)return true;toast("코인이 부족해요");return false}
+function useItem(k){if(items[k]>0)items[k]--;else coins-=300;refresh()}
+function canUse(k){if(items[k]>0||coins>=300)return true;toast("코인이 부족해요");return false}
 function showCp(){const p=$("cp");p.innerHTML="";p.style.display="flex";Object.keys(px).forEach(k=>{const d=document.createElement("div");d.className="chip";d.style.background=COL[k];d.onclick=()=>magnet(k);p.appendChild(d)});const x=document.createElement("button");x.textContent="✕";x.onclick=()=>p.style.display="none";p.appendChild(x)}
 function magnet(k){const ts=queue.filter(c=>c.k==k&&c.got<c.cap);if(!ts.length){toast("도로에 그 색 트럭이 없어요");return}
  for(const c of ts){let need=c.cap-c.got;for(let i=W*H-1;i>=0&&need>0;i--)if(sand[i]==k){sand[i]="";need--;c.got++;c.vis++}}
@@ -558,21 +558,21 @@ function shake(){const fixed=queue.filter(c=>c.got>0),S=[...cars.filter(c=>c.s<2
  S.forEach(c=>tl[c.k]=(tl[c.k]||0)+c.L);
  S.forEach(c=>{const k=c.k,r=Math.max(0,rem[k]),a=ac[k]||0;c.cap=Math.floor((a+c.L)*r/tl[k])-Math.floor(a*r/tl[k]);ac[k]=a+c.L;c.got=0;c.ac=0})}
 let shopCtx=null;
-function openShop(kind){if(won||lost)return;shopCtx=kind;paused=true;const nm={p:'주차장 +1',t:'집게',m:'자석',s:'쉐이크'}[kind],stock=kind=='p'?0:items[kind];$("sdt").textContent=nm;$("sd0").style.display=stock>0?'block':'none';$("sd0").textContent='보유 '+stock+'개 사용';$("sd1").textContent='🪙 100 코인으로 '+(kind=='p'?'주차장 +1':'구매')+' (보유 '+coins+')';$("sd2").textContent='📺 광고 보고 '+(kind=='p'?'주차장 +1':'받기');$("sd2").disabled=false;$("sd").style.display='flex'}
+function openShop(kind){if(won||lost)return;shopCtx=kind;paused=true;const nm={p:'주차장 +1',t:'집게',m:'자석',s:'쉐이크'}[kind],stock=kind=='p'?0:items[kind];$("sdt").textContent=nm;$("sd0").style.display=stock>0?'block':'none';$("sd0").textContent='보유 '+stock+'개 사용';$("sd1").textContent='🪙 300 코인으로 '+(kind=='p'?'주차장 +1':'구매')+' (보유 '+coins+')';$("sd2").textContent='📺 광고 보고 '+(kind=='p'?'주차장 +1':'받기');$("sd2").disabled=false;$("sd").style.display='flex'}
 function closeShop(){$("sd").style.display='none';paused=false}
 function activate(k){if(k=='t'){mode='t';toast('빼낼 트럭을 탭하세요')}else if(k=='m'){showCp()}else if(k=='s'){shake();useItem('s');toast('색상이 섞였어요!')}}
 function grantShop(){const k=shopCtx;closeShop();if(k=='p'){MAXS++;idle=0;queue.forEach(c=>c.laps=0);refresh();return}items[k]++;refresh();activate(k)}
 $("sd0").onclick=()=>{const k=shopCtx;closeShop();activate(k)};
-$("sd1").onclick=()=>{if(coins<100){$("sd1").textContent='코인이 부족해요 (보유 '+coins+')';return}coins-=100;refresh();grantShop()};
+$("sd1").onclick=()=>{if(coins<300){$("sd1").textContent='코인이 부족해요 (보유 '+coins+')';return}coins-=300;refresh();grantShop()};
 $("sd2").onclick=()=>{let n=5;const bt=$("sd2");bt.disabled=true;const iv=setInterval(()=>{bt.textContent='📺 광고 재생 중… '+n;if(n--<=0){clearInterval(iv);bt.disabled=false;grantShop()}},1000)};
 $("sdx").onclick=closeShop;
 $("it_t").onclick=()=>openShop('t');
 $("it_m").onclick=()=>openShop('m');
 $("it_s").onclick=()=>openShop('s');
 $("sa").onclick=()=>openShop('p');
-function showStuck(){paused=true;$("evt").innerHTML="🚧 주차 공간이 부족해요";$("ev1").textContent="🪙 100 코인으로 주차장 +1 (보유 "+coins+")";$("ev2").textContent="📺 광고 보고 주차장 +1";$("ev").style.display="flex"}
+function showStuck(){paused=true;$("evt").innerHTML="🚧 주차 공간이 부족해요";$("ev1").textContent="🪙 300 코인으로 주차장 +1 (보유 "+coins+")";$("ev2").textContent="📺 광고 보고 주차장 +1";$("ev").style.display="flex"}
 function resume(){MAXS++;idle=0;queue.forEach(c=>c.laps=0);paused=false;$("ev").style.display="none";refresh()}
-$("ev1").onclick=()=>{if(MAXS>=8){$("ev1").textContent="더 늘릴 수 없어요"}else if(coins<100){$("ev1").textContent="코인이 부족해요 (보유 "+coins+")"}else{coins-=100;resume()}};
+$("ev1").onclick=()=>{if(MAXS>=8){$("ev1").textContent="더 늘릴 수 없어요"}else if(coins<300){$("ev1").textContent="코인이 부족해요 (보유 "+coins+")"}else{coins-=300;resume()}};
 $("ev2").onclick=()=>{let n=5;const b=$("ev2");b.disabled=true;const iv=setInterval(()=>{b.textContent="📺 광고 재생 중… "+n;if(n--<=0){clearInterval(iv);b.disabled=false;b.textContent="📺 광고 보고 주차장 +1";resume()}},1000)};
 $("ev3").onclick=()=>{$("ev").style.display="none";start()};
 $("nx").onclick=()=>{if(!lost)lv++;start();save()};
@@ -796,7 +796,7 @@ function goTab(t){if(t==1){showHome();return}$("hm").style.display="none";$("dg"
 [...$("tb").children].forEach(b=>b.onclick=()=>goTab(+b.dataset.t));
 const ITN={t:['집게','🔧'],m:['자석','🧲'],s:['쉐이크','🌀']};
 function drawShop(){const l=$("shl");l.innerHTML="";refresh();
- for(const k of ['t','m','s']){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">'+ITN[k][1]+'</div><div>'+ITN[k][0]+'<small>보유 '+items[k]+'개</small></div>';const b=document.createElement('button');b.textContent='🪙 100';b.onclick=()=>{if(coins<100){gtoast('코인이 부족해요');return}coins-=100;items[k]++;refresh();save();drawShop();gtoast(ITN[k][0]+' +1')};r.appendChild(b);l.appendChild(r)}
+ for(const k of ['t','m','s']){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">'+ITN[k][1]+'</div><div>'+ITN[k][0]+'<small>보유 '+items[k]+'개</small></div>';const b=document.createElement('button');b.textContent='🪙 300';b.onclick=()=>{if(coins<300){gtoast('코인이 부족해요');return}coins-=300;items[k]++;refresh();save();drawShop();gtoast(ITN[k][0]+' +1')};r.appendChild(b);l.appendChild(r)}
  const ad=document.createElement('div');ad.className='shr';ad.innerHTML='<div class="ic">🎬</div><div>무료 코인<small>광고 보기 (테스트용 가짜 광고)</small></div>';const ab=document.createElement('button');ab.className='ad';ab.textContent='+100';ab.onclick=()=>{coins+=100;refresh();save();gtoast('🪙 +100')};ad.appendChild(ab);l.appendChild(ad);
  for(const [n,sub] of [['광고 제거','앱으로 만든 뒤에 열려요'],['코인 팩','앱으로 만든 뒤에 열려요']]){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">⭐</div><div>'+n+'<small>'+sub+'</small></div>';const b=document.createElement('button');b.className='dis';b.textContent='준비 중';r.appendChild(b);l.appendChild(r)}}
 // ---- settings
