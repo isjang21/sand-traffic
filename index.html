@@ -16,6 +16,8 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #st{display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:14px}
 #st button{padding:5px 10px;font-size:13px}
 #its{display:flex;gap:8px;align-items:center}
+#its #it_t,#its #it_m,#its #it_s{display:none}
+#its{justify-content:flex-end}
 #its button{flex:1;background:var(--slot);color:var(--tx);padding:5px 2px;font-size:12px;border-radius:8px}
 #its #ps{flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:#2f5fd0;font-size:11px;border:2px solid #cfe0ff}
 #top{display:flex;gap:6px;align-items:flex-start;flex:none}
@@ -813,7 +815,7 @@ function goTab(t){if(t==1){showHome();return}$("hm").style.display="none";$("dg"
 [...$("tb").children].forEach(b=>b.onclick=()=>goTab(+b.dataset.t));
 const ITN={t:['집게','🔧'],m:['자석','🧲'],s:['쉐이크','🌀']};
 function drawShop(){const l=$("shl");l.innerHTML="";refresh();
- for(const k of ['t','m','s']){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">'+ITN[k][1]+'</div><div>'+ITN[k][0]+'<small>보유 '+items[k]+'개</small></div>';const b=document.createElement('button');b.textContent='🪙 300';b.onclick=()=>{if(coins<300){gtoast('코인이 부족해요');return}coins-=300;items[k]++;refresh();save();drawShop();gtoast(ITN[k][0]+' +1')};r.appendChild(b);l.appendChild(r)}
+ for(const k of []){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">'+ITN[k][1]+'</div><div>'+ITN[k][0]+'<small>보유 '+items[k]+'개</small></div>';const b=document.createElement('button');b.textContent='🪙 300';b.onclick=()=>{if(coins<300){gtoast('코인이 부족해요');return}coins-=300;items[k]++;refresh();save();drawShop();gtoast(ITN[k][0]+' +1')};r.appendChild(b);l.appendChild(r)}
  const ad=document.createElement('div');ad.className='shr';ad.innerHTML='<div class="ic">🎬</div><div>무료 코인<small>광고 보기 (테스트용 가짜 광고)</small></div>';const ab=document.createElement('button');ab.className='ad';ab.textContent='+100';ab.onclick=()=>{coins+=100;refresh();save();gtoast('🪙 +100')};ad.appendChild(ab);l.appendChild(ad);
  for(const [n,sub] of [['광고 제거','앱으로 만든 뒤에 열려요'],['코인 팩','앱으로 만든 뒤에 열려요']]){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">⭐</div><div>'+n+'<small>'+sub+'</small></div>';const b=document.createElement('button');b.className='dis';b.textContent='준비 중';r.appendChild(b);l.appendChild(r)}}
 // ---- settings
