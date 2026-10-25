@@ -159,7 +159,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 <div id="app">
  <div id="top"><div id="pw"><canvas id="pic"></canvas></div><div id="hud"><span id="co"></span><span id="lv"></span><span id="pcn"></span></div></div>
  <canvas id="road"></canvas>
- <div id="st"><span id="sc"></span><button id="sa">＋주차장 300🪙</button></div>
+ <div id="st"><span id="sc"></span><button id="sa">＋주차장 100🪙</button></div>
  <div id="bw"><canvas id="bd"></canvas><div id="toast"></div><div id="cp"></div><div id="ov"><div id="ovt"></div><canvas id="ovc" width="130" height="100"></canvas><button id="nx">다음 레벨</button><button id="nxh">홈으로</button></div></div>
  <div id="its"><button id="it_t"></button><button id="it_m"></button><button id="it_s"></button><button id="ps">❚❚</button></div>
  <div id="ev"><div id="evt"></div><button id="ev1"></button><button id="ev2"></button><button id="ev3">처음부터 다시</button></div>
@@ -561,21 +561,21 @@ function shake(){const fixed=queue.filter(c=>c.got>0),S=[...cars.filter(c=>c.s<2
  S.forEach(c=>tl[c.k]=(tl[c.k]||0)+c.L);
  S.forEach(c=>{const k=c.k,r=Math.max(0,rem[k]),a=ac[k]||0;c.cap=Math.floor((a+c.L)*r/tl[k])-Math.floor(a*r/tl[k]);ac[k]=a+c.L;c.got=0;c.ac=0})}
 let shopCtx=null;
-function openShop(kind){if(won||lost)return;shopCtx=kind;paused=true;const nm={p:'주차장 +1',t:'집게',m:'자석',s:'쉐이크'}[kind],stock=kind=='p'?0:items[kind];$("sdt").textContent=nm;$("sd0").style.display=stock>0?'block':'none';$("sd0").textContent='보유 '+stock+'개 사용';$("sd1").textContent='🪙 300 코인으로 '+(kind=='p'?'주차장 +1':'구매')+' (보유 '+coins+')';$("sd2").textContent='📺 광고 보고 '+(kind=='p'?'주차장 +1':'받기');$("sd2").disabled=false;$("sd").style.display='flex'}
+function openShop(kind){if(won||lost)return;shopCtx=kind;paused=true;const nm={p:'주차장 +1',t:'집게',m:'자석',s:'쉐이크'}[kind],stock=kind=='p'?0:items[kind];$("sdt").textContent=nm;$("sd0").style.display=stock>0?'block':'none';$("sd0").textContent='보유 '+stock+'개 사용';$("sd1").textContent='🪙 '+(kind=='p'?100:300)+' 코인으로 '+(kind=='p'?'주차장 +1':'구매')+' (보유 '+coins+')';$("sd2").textContent='📺 광고 보고 '+(kind=='p'?'주차장 +1':'받기');$("sd2").disabled=false;$("sd").style.display='flex'}
 function closeShop(){$("sd").style.display='none';paused=false}
 function activate(k){if(k=='t'){mode='t';toast('빼낼 트럭을 탭하세요')}else if(k=='m'){showCp()}else if(k=='s'){shake();useItem('s');toast('색상이 섞였어요!')}}
 function grantShop(){const k=shopCtx;closeShop();if(k=='p'){MAXS++;idle=0;queue.forEach(c=>c.laps=0);refresh();return}items[k]++;refresh();activate(k)}
 $("sd0").onclick=()=>{const k=shopCtx;closeShop();activate(k)};
-$("sd1").onclick=()=>{if(coins<300){$("sd1").textContent='코인이 부족해요 (보유 '+coins+')';return}coins-=300;refresh();grantShop()};
+$("sd1").onclick=()=>{{const pr=shopCtx=='p'?100:300;if(coins<pr){$("sd1").textContent='코인이 부족해요 (보유 '+coins+')';return}coins-=pr;refresh();grantShop()}};
 $("sd2").onclick=()=>{let n=5;const bt=$("sd2");bt.disabled=true;const iv=setInterval(()=>{bt.textContent='📺 광고 재생 중… '+n;if(n--<=0){clearInterval(iv);bt.disabled=false;grantShop()}},1000)};
 $("sdx").onclick=closeShop;
 $("it_t").onclick=()=>openShop('t');
 $("it_m").onclick=()=>openShop('m');
 $("it_s").onclick=()=>openShop('s');
 $("sa").onclick=()=>openShop('p');
-function showStuck(){paused=true;$("evt").innerHTML="🚧 주차 공간이 부족해요";$("ev1").textContent="🪙 300 코인으로 주차장 +1 (보유 "+coins+")";$("ev2").textContent="📺 광고 보고 주차장 +1";$("ev").style.display="flex"}
+function showStuck(){paused=true;$("evt").innerHTML="🚧 주차 공간이 부족해요";$("ev1").textContent="🪙 100 코인으로 주차장 +1 (보유 "+coins+")";$("ev2").textContent="📺 광고 보고 주차장 +1";$("ev").style.display="flex"}
 function resume(){MAXS++;idle=0;queue.forEach(c=>c.laps=0);paused=false;$("ev").style.display="none";refresh()}
-$("ev1").onclick=()=>{if(MAXS>=8){$("ev1").textContent="더 늘릴 수 없어요"}else if(coins<300){$("ev1").textContent="코인이 부족해요 (보유 "+coins+")"}else{coins-=300;resume()}};
+$("ev1").onclick=()=>{if(MAXS>=8){$("ev1").textContent="더 늘릴 수 없어요"}else if(coins<100){$("ev1").textContent="코인이 부족해요 (보유 "+coins+")"}else{coins-=100;resume()}};
 $("ev2").onclick=()=>{let n=5;const b=$("ev2");b.disabled=true;const iv=setInterval(()=>{b.textContent="📺 광고 재생 중… "+n;if(n--<=0){clearInterval(iv);b.disabled=false;b.textContent="📺 광고 보고 주차장 +1";resume()}},1000)};
 $("ev3").onclick=()=>{$("ev").style.display="none";start()};
 $("nx").onclick=()=>{if(!lost)lv++;start();save()};
