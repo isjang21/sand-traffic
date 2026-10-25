@@ -403,7 +403,7 @@ function decorate(){return;const n=W*H,cnt={};for(let i=0;i<n;i++)cnt[sand[i]]=(
    for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){const x=cx+dx,y=cy+dy;if(x<0||y<0||x>=W||y>=H)continue;const j=y*W+x;if(sand[j]!=k)continue;
     const ok=sh==0?dx*dx+dy*dy<=r*r:sh==1?Math.abs(dy)<=1&&Math.abs(dx)<=r+1:Math.abs(dx)+Math.abs(dy)<=r;
     if(ok)sand[j]=col}}})}
-function start(){
+function start(){setTrack(lv%3);
  const art=lv<ANIM.length?ANIM[lv]:ART[(lv-ANIM.length)%ART.length];W=130;H=100;px={};
  sand=[];{const cv=document.createElement('canvas');cv.width=W*4;cv.height=H*4;const g=cv.getContext('2d');g.fillStyle=COL.c;g.fillRect(0,0,W*4,H*4);g.scale(W*4/260,H*4/200);art.d(g,art.fx?COL:Object.assign({},COL,{k:COL.e,h:COL.o,l:COL.g}));const d0=g.getImageData(0,0,W*4,H*4).data,d=new Uint8ClampedArray(W*H*4);for(let i=0;i<W*H;i++){const j=((((i/W)|0)*4+2)*W*4+(i%W)*4+2)*4;d[i*4]=d0[j];d[i*4+1]=d0[j+1];d[i*4+2]=d0[j+2]}const _u=0,ks=(art.k||'roygcbpe').split('');for(let i=0;i<W*H;i++){let b='w',e0=1e9;for(const k of ks){const q=RGB[k],e=(d[i*4]-q[0])**2+(d[i*4+1]-q[1])**2+(d[i*4+2]-q[2])**2;if(e<e0){e0=e;b=k}}sand[i]=b}decorate();for(let i=0;i<W*H;i++)(px[sand[i]]=px[sand[i]]||[]).push(i)}
  tot=W*H;pc=0;
@@ -619,7 +619,18 @@ function sandInit(){const b=AC.createBuffer(1,AC.sampleRate,AC.sampleRate),d=b.g
 function kick(t){const o=AC.createOscillator(),g=AC.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(40,t+.12);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.15);o.connect(g);g.connect(mg);o.start(t);o.stop(t+.2)}
 function hat(t){if(!nb){nb=AC.createBuffer(1,Math.floor(AC.sampleRate*.05),AC.sampleRate);const d=nb.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1}const s=AC.createBufferSource(),g=AC.createGain(),f=AC.createBiquadFilter();f.type='highpass';f.frequency.value=6000;s.buffer=nb;g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.04);s.connect(f);f.connect(g);g.connect(mg);s.start(t)}
 const LEAD=[[0,4,7,4,2,4,0,null],[0,4,9,7,4,2,0,null],[5,9,12,9,7,5,4,null],[7,11,14,11,9,7,5,null]];
-function mtick(){if(!AC)return;if(!musicOn){mnt=AC.currentTime+.1;return}while(mnt<AC.currentTime+.5){const bar=Math.floor(mstep/8)%4,b=mstep%8,ch=CH[bar],n=LEAD[bar][b];if(n!==null){const f=MN(n+12);mnote(f,mnt,.22,'sine',.55);mnote(f*4,mnt,.07,'sine',.12)}if(b%4==0)mnote(MN(ch[0]-12),mnt,.4,'triangle',.7);if(b==2||b==6){mnote(MN(ch[1]),mnt,.15,'triangle',.25);mnote(MN(ch[2]),mnt,.15,'triangle',.25)}if(b%4==0)kick(mnt);mnt+=.27;mstep++}}
+const TRK=[
+ {dt:.27,key:0,lead:LEAD,ch:CH,wave:'sine',lv:.55,ld:.22,over:1,bd:.4,be:4,stab:[2,6],sd:.15,kick:1},
+ {dt:.36,key:2,lead:[[4,null,7,null,9,null,7,null],[5,null,9,null,12,null,9,null],[9,null,12,null,7,null,4,null],[11,null,7,null,14,null,11,null]],ch:[[0,4,7],[-7,-3,0],[-3,0,4],[-5,-1,2]],wave:'triangle',lv:.6,ld:.5,over:2,bd:.7,be:4,stab:[3,7],sd:.3,kick:0},
+ {dt:.2,key:-2,lead:[[0,null,4,7,null,12,7,null],[14,null,11,7,null,11,14,null],[12,null,9,12,null,16,12,null],[9,null,5,9,null,12,9,null]],ch:[[0,4,7],[-5,-1,2],[-3,0,4],[-7,-3,0]],wave:'triangle',lv:.5,ld:.14,over:0,bd:.16,be:2,stab:[1,3,5,7],sd:.08,kick:1}];
+let musTrack=0;
+function setTrack(t){if(t!==musTrack){musTrack=t;mstep=0;if(AC)mnt=Math.max(mnt,AC.currentTime+.1)}}
+function musStep(t){const T=TRK[musTrack],bar=Math.floor(mstep/8)%4,b=mstep%8,ch=T.ch[bar],n=T.lead[bar][b],k=T.key;
+ if(n!==null){const f=MN(n+12+k);mnote(f,t,T.ld,T.wave,T.lv);if(T.over==1)mnote(f*4,t,.07,'sine',.12);if(T.over==2)mnote(f*2,t,.18,'sine',.12)}
+ if(b%T.be==0)mnote(MN(ch[0]-12+k),t,T.bd,'triangle',.7);
+ if(T.stab.includes(b)){mnote(MN(ch[1]+k),t,T.sd,'triangle',.25);mnote(MN(ch[2]+k),t,T.sd,'triangle',.25)}
+ if(T.kick&&b%4==0)kick(t);mstep++}
+function mtick(){if(!AC)return;if(!musicOn){mnt=AC.currentTime+.1;return}while(mnt<AC.currentTime+.5){musStep(mnt);mnt+=TRK[musTrack].dt}}
 function startMusic(){if(AC){if(AC.state=='suspended')AC.resume();return}try{AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.gain.value=.16;mg.connect(AC.destination);sg=AC.createGain();sg.gain.value=.5;sg.connect(AC.destination);loadHorn();sandInit();mnt=AC.currentTime+.1;setInterval(mtick,120);AC.resume()}catch(e){}}
 document.addEventListener('pointerdown',startMusic);
 function truckSVG(){
