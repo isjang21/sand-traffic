@@ -141,7 +141,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #atc{width:100%;height:52px;border-radius:26px;border:4px solid #fff;background:linear-gradient(#6fe39a,#27b061);color:#fff;font-size:18px;font-weight:900;box-shadow:0 5px 0 #167a43}
 #atc.dis{background:#b8c8c3;box-shadow:none}
 #atm{text-align:center;font-size:13px;font-weight:700;margin-bottom:10px}
-#sp{z-index:99;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 20% 15%,#fff7c9 0,transparent 45%),linear-gradient(#a8ecd9,#ffeec2);text-align:center}
+#sp{z-index:99;display:flex;align-items:center;justify-content:flex-start;padding-top:15vh;box-sizing:border-box;background:radial-gradient(circle at 20% 15%,#fff7c9 0,transparent 45%),linear-gradient(#a8ecd9,#ffeec2);text-align:center}
 #spl{font-size:clamp(46px,15vw,66px);font-weight:900;color:#1f8f7a;text-shadow:0 4px 0 rgba(255,255,255,.9),0 8px 12px rgba(20,90,80,.25);line-height:1}
 #spr{display:flex;gap:10px;justify-content:center;margin:22px 0 10px}
 #spr canvas{width:56px;height:56px;object-fit:cover;border-radius:50%;border:3px solid #fff;image-rendering:pixelated;box-shadow:0 3px 0 rgba(31,143,122,.2)}
@@ -581,7 +581,7 @@ $("ev1").onclick=()=>{if(MAXS>=8){$("ev1").textContent="더 늘릴 수 없어요
 $("ev2").onclick=()=>{let n=5;const b=$("ev2");b.disabled=true;const iv=setInterval(()=>{b.textContent="📺 광고 재생 중… "+n;if(n--<=0){clearInterval(iv);b.disabled=false;b.textContent="📺 광고 보고 주차장 +1";resume()}},1000)};
 $("ev3").onclick=()=>{$("ev").style.display="none";start()};
 $("nx").onclick=()=>{if(!lost)lv++;start();save()};
-$("nxh").onclick=()=>{$("ov").style.display="none";if(!lost)lv++;save();start();showHome()};
+$("nxh").onclick=()=>{$("ov").style.display="none";if(!lost)lv++;start();save();showHome()};
 const fxc=document.createElement('canvas');fxc.style.cssText='position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:6';document.body.appendChild(fxc);const fxx=fxc.getContext('2d');
 function fxSize(){const d=window.devicePixelRatio||1;fxc.width=innerWidth*d;fxc.height=innerHeight*d;fxx.setTransform(d,0,0,d,0,0)}fxSize();addEventListener('resize',fxSize);
 let lastV=0;function vib(p){try{if(navigator.vibrate&&!muted&&vibOn){const t=performance.now();if(typeof p=='number'&&t-lastV<110)return;lastV=t;navigator.vibrate(p)}}catch(e){}}
@@ -779,7 +779,8 @@ addEventListener("resize",fit);
 
 const SK='sandTraffic.v1';let got={},svT=0;
 let vibOn=true,att={n:0,last:''},lastSaveT=0;
-function save(){try{localStorage.setItem(SK,JSON.stringify({lv,coins,items,got,muted,musicOn,vibOn,att}));lastSaveT=Date.now()}catch(e){}}
+function storageOK(){try{const k='sp.test';localStorage.setItem(k,'1');const r=localStorage.getItem(k)==='1';localStorage.removeItem(k);return r}catch(e){return false}}
+function save(){try{localStorage.setItem(SK,JSON.stringify({lv:(won&&!lost)?lv+1:lv,coins,items,got,muted,musicOn,vibOn,att}));lastSaveT=Date.now()}catch(e){}}
 function saveSoon(){clearTimeout(svT);svT=setTimeout(save,250)}
 function load(){try{const d=JSON.parse(localStorage.getItem(SK)||'null');if(!d)return;lv=Math.max(0,d.lv|0);if(typeof d.coins=='number')coins=d.coins;items=Object.assign(items,d.items||{});got=d.got||{};muted=!!d.muted;musicOn=d.musicOn!==false;vibOn=d.vibOn!==false;if(d.att&&typeof d.att.n=='number')att={n:d.att.n|0,last:String(d.att.last||'')}}catch(e){}}
 function markGot(){if(lv>=ANIM.length||lv>9)return false;const nw=!got[lv];got[lv]=1;save();return nw}
@@ -820,7 +821,7 @@ function drawShop(){const l=$("shl");l.innerHTML="";refresh();
  for(const [n,sub] of [['광고 제거','앱으로 만든 뒤에 열려요'],['코인 팩','앱으로 만든 뒤에 열려요']]){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">⭐</div><div>'+n+'<small>'+sub+'</small></div>';const b=document.createElement('button');b.className='dis';b.textContent='준비 중';r.appendChild(b);l.appendChild(r)}}
 // ---- settings
 function tgSet(){[['se_s',!muted],['se_m',musicOn],['se_v',vibOn]].forEach(([id,on])=>$(id).className='tg'+(on?' on':''))}
-function savedTxt(){if(!lastSaveT)return '자동 저장됨';const d=new Date(lastSaveT);return '자동 저장됨 · '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')}
+function savedTxt(){if(!storageOK())return '⚠ 저장 안 됨 (이 화면에서는 막혀 있어요)';if(!lastSaveT)return '자동 저장됨';const d=new Date(lastSaveT);return '자동 저장됨 · '+d.getHours()+':'+String(d.getMinutes()).padStart(2,'0')}
 function openSe(){tgSet();save();$("sev2").textContent=savedTxt();$("sec").value='';$("se").style.display="flex"}
 $("stb").onclick=openSe;$("spi").onclick=()=>{$("sp").style.display="none";showHome();openSe()};$("sex").onclick=()=>$("se").style.display="none";
 $("se_s").onclick=()=>{muted=!muted;$("pv").style.opacity=muted?.35:1;tgSet();saveSoon()};
@@ -833,6 +834,7 @@ let rst2=0;$("ser").onclick=()=>{if(!rst2){rst2=1;$("ser").textContent='정말 �
 const todayS=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const attRw=d=>d==30?1000:(d%7==0?300:100);
 const canAtt=()=>att.last!==todayS();
+function stWarn(){const e=$('gt');if(!storageOK()){gtoast('⚠ 이 화면에서는 기록이 저장되지 않아요. 크롬·사파리로 열어주세요')}}
 function atDot(){$("atd").style.display=canAtt()?'block':'none'}
 function drawAt(){const done=(att.n>0&&att.n%30==0&&att.last==todayS())?30:att.n%30,nextD=canAtt()?(att.n%30)+1:0;const g=$("atg");g.innerHTML='';
  for(let d=1;d<=30;d++){const e=document.createElement('div');e.className='st'+(d<=done?' dn':'')+(d==nextD?' tdy':'')+((d%7==0||d==30)&&d>done?' big':'');e.innerHTML=(d<=done?'✓':d)+'<i>'+(d<=done?'':(attRw(d)>100?'🪙'+attRw(d):''))+'</i>';g.appendChild(e)}
@@ -846,7 +848,7 @@ let spOpen=true,spAuto=true;
 function initSplash(){const r=$("spr");for(let i=0;i<5;i++){const c=document.createElement('canvas');c.width=130;c.height=100;c.getContext('2d').drawImage(artCv(i),0,0);r.appendChild(c)}
  requestAnimationFrame(()=>{$("spb").firstChild.style.width="100%"});setTimeout(()=>{$("spt").style.opacity='';$("spt").style.animationPlayState='running';spReady=true},1300)}
 let spReady=false;$("spt").style.animationName='none';setTimeout(()=>{$("spt").style.animationName='bl';$("spt").style.opacity=1},1300);
-$("sp").onclick=e=>{if(!spReady||e.target.id=='spi')return;$("sp").style.display="none";startMusic();showHome();if(canAtt()&&spAuto){spAuto=false;openAt()}};
+$("sp").onclick=e=>{if(!spReady||e.target.id=='spi')return;$("sp").style.display="none";startMusic();showHome();stWarn();if(canAtt()&&spAuto){spAuto=false;openAt()}};
 
 load();
 $("pm").style.opacity=musicOn?1:.35;$("pv").style.opacity=muted?.35:1;
