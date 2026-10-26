@@ -858,9 +858,18 @@ addEventListener("resize",fit);
 const SK='sandTraffic.v1';let got={},svT=0;
 let vibOn=true,att={n:0,last:''},lastSaveT=0;
 function storageOK(){try{const k='sp.test';localStorage.setItem(k,'1');const r=localStorage.getItem(k)==='1';localStorage.removeItem(k);return r}catch(e){return false}}
-function save(){try{localStorage.setItem(SK,JSON.stringify({lv:(won&&!lost&&!wld)?lv+1:lv,coins,items,got,muted,musicOn,vibOn,att,wown,wp}));lastSaveT=Date.now()}catch(e){}}
+function mkJ(){return JSON.stringify({lv:(won&&!lost&&!wld)?lv+1:lv,coins,items,got,muted,musicOn,vibOn,att,wown,wp,t:Date.now()})}
+function save(){const j=mkJ();try{localStorage.setItem(SK,j);lastSaveT=Date.now()}catch(e){}clPush(j)}
 function saveSoon(){clearTimeout(svT);svT=setTimeout(save,250)}
-function load(){try{const d=JSON.parse(localStorage.getItem(SK)||'null');if(!d)return;lv=Math.max(0,d.lv|0);if(typeof d.coins=='number')coins=d.coins;items=Object.assign(items,d.items||{});got=d.got||{};wown=d.wown||{};wp=d.wp||{};muted=!!d.muted;musicOn=d.musicOn!==false;vibOn=d.vibOn!==false;if(d.att&&typeof d.att.n=='number')att={n:d.att.n|0,last:String(d.att.last||'')}}catch(e){}}
+function load(){try{loadFrom(localStorage.getItem(SK))}catch(e){}}
+let localT=0;
+function loadFrom(str){const d=JSON.parse(str||'null');if(!d)return;lv=Math.max(0,d.lv|0);if(typeof d.coins=='number')coins=d.coins;items=Object.assign(items,d.items||{});got=d.got||{};wown=d.wown||{};wp=d.wp||{};muted=!!d.muted;musicOn=d.musicOn!==false;vibOn=d.vibOn!==false;if(d.att&&typeof d.att.n=='number')att={n:d.att.n|0,last:String(d.att.last||'')};localT=d.t|0}
+// cloud save (only inside the claude.ai viewer; per-account private)
+let CL=null,clJ=null,clT=0;
+function clPush(j){clJ=j;if(!CL)return;clearTimeout(clPush.t);clPush.t=setTimeout(async()=>{const x=clJ;try{await CL.set({j:x,t:JSON.parse(x).t})}catch(e){}},1500)}
+async function clInit(){try{if(!(window.claude&&claude.use))return;const [db,u]=await Promise.all([claude.use("db"),claude.use("user")]);if(!db||!u)return;const id=await u.id();if(!id)return;const ref=db.doc("data/users/"+id+"/save"),sn=await ref.get();
+ if(sn.exists){const d=sn.data();if(d&&typeof d.j=='string'&&(d.t|0)>localT){let ok=false;try{localStorage.setItem(SK,d.j);ok=localStorage.getItem(SK)===d.j}catch(e){}if(ok){location.reload();return}loadFrom(d.j);buildHome();$("go").textContent="레벨 "+(lv+1)+" 시작";refresh()}else CL=ref}
+ CL=ref;if(!sn.exists||clJ||localT>((sn.data()||{}).t|0))clPush(clJ||mkJ())}catch(e){}}
 function markGot(){if(lv>=ANIM.length||lv>9)return false;const nw=!got[lv];got[lv]=1;save();return nw}
 const PETN=10;function gotN(){let n=0;for(let i=0;i<PETN;i++)if(got[i])n++;return n}
 const thumbC={};
@@ -1051,7 +1060,7 @@ function initSplash(){const r=$("spr");for(let i=0;i<5;i++){const c=document.cre
 let spReady=false;$("spt").style.animationName='none';setTimeout(()=>{$("spt").style.animationName='bl';$("spt").style.opacity=1},1300);
 $("sp").onclick=e=>{if(!spReady||e.target.id=='spi')return;$("sp").style.display="none";startMusic();showHome();stWarn();if(canAtt()&&spAuto){spAuto=false;openAt()}};
 
-load();
+load();clInit();
 $("pm").style.opacity=musicOn?1:.35;$("pv").style.opacity=muted?.35:1;
 start();requestAnimationFrame(loop);showHome();initSplash();
 </script></body></html>
