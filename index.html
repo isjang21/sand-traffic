@@ -174,6 +174,19 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 
 #wl,#wi,#wm{position:fixed;inset:0;display:none;flex-direction:column;color:#1d5c52;font-family:system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif;background:linear-gradient(#a8ecd9,#ffeec2);overflow-y:auto;padding:max(16px,env(safe-area-inset-top)) 16px 96px}
 #wl{z-index:60}#wi,#wm{z-index:70;padding-bottom:30px}
+.mn{position:absolute;transform:translate(-50%,-50%);width:150px;text-align:center;cursor:pointer}
+.mi{width:100px;height:100px;border-radius:50%;overflow:hidden;border:5px solid #fff;box-shadow:0 0 0 5px rgba(255,255,255,.35),0 6px 0 rgba(0,70,110,.3);background:linear-gradient(#f9e6ae,#ecc982);margin:0 auto;display:flex;align-items:center;justify-content:center;position:relative}
+.mi span{font-size:54px;line-height:1}
+.mi canvas{width:100%;height:100%;object-fit:cover;display:block;image-rendering:pixelated}
+.mn.lk .mi canvas{filter:grayscale(1) brightness(.85) contrast(.8)}
+.mn.lk .mi::after{content:"🔒";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:30px;background:rgba(20,70,110,.25)}
+.mn.soon .mi::after{content:none}
+.mn.soon .mi{background:linear-gradient(#cfe8f0,#a9cfdc)}
+.ml{margin-top:8px;font-weight:900;font-size:15px;color:#0b4560;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.ml small{display:block;font-size:12px;font-weight:800;opacity:.85}
+.mb{position:absolute;left:-6px;top:-8px;font-size:34px;animation:mbob 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes mbob{50%{transform:translateY(-5px) rotate(-6deg)}}
+
 .wh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .wh b{font-size:24px;font-weight:900}
 .wh button.bk{height:38px;padding:0 14px;border-radius:19px;background:#fff;color:#1d5c52;font-weight:800;box-shadow:none}
@@ -221,10 +234,10 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
  <div id="dgd"><canvas width="130" height="100"></canvas><div id="dgn"></div><div id="dgi"></div><small>화면을 누르면 닫혀요</small></div>
  <div id="pz"><div id="pzb"><div id="pzt">일시정지</div><button id="pzx">✕</button><div id="pzs"><button id="pm">🎵</button><button id="pv">🔊</button></div><div id="pzr"><button id="pe">종료</button><button id="pc2">계속</button></div></div></div>
  <div id="sh"><div id="shh"><b>상점</b><span id="shc"></span></div><div id="shl"></div></div>
- <div id="wl"><div class="wh"><b>월드</b><span id="wlc" style="font-weight:800"></span></div><div class="wsub">좋아하는 동물만 모아서 즐기는 별도 모험이에요</div><div id="wls"></div></div>
+ <div id="wl"><div class="wh"><b>항해 지도</b><span id="wlc" style="font-weight:800"></span></div><div class="wsub">배를 타고 바다 곳곳의 섬 친구들을 구하러 가요</div><div id="wls"></div></div>
  <div id="wi"><div class="wh"><button class="bk" id="wib">← 뒤로</button><b id="wit"></b><span style="width:70px"></span></div><canvas id="wih" width="130" height="100"></canvas><div id="wid" style="text-align:center;font-weight:700;line-height:1.5;font-size:14px;margin-bottom:12px"></div><div class="wgr" id="wig"></div><div class="wbx" id="wil"></div><button class="wbig dis" id="wib1">₩ 앱 출시 후 열려요</button><button class="wbig sm" id="wib2"></button></div>
  <div id="wm"><div class="wh"><button class="bk" id="wmb">← 뒤로</button><b id="wmt"></b><span id="wmn" style="width:70px;text-align:right;font-weight:800"></span></div><div class="wbar"><i id="wmp"></i></div><div class="wgr" id="wmg"></div><div class="wsec" id="wmh"></div><div class="wlv" id="wmv"></div><div class="wsec">스페셜 (업데이트)</div><div class="wsp"><div class="th">✨</div><div style="flex:1" id="wms"></div><span style="font-size:13px;color:#d6572f">곧 열려요</span></div><button class="wbig" id="wmgo"></button></div>
- <div id="tb"><button data-t="0"><b>🛒</b>상점</button><button data-t="3"><b>🌍</b>월드</button><button data-t="1"><b>🏠</b>홈</button><button data-t="2"><b>📖</b>도감</button></div>
+ <div id="tb"><button data-t="0"><b>🛒</b>상점</button><button data-t="3"><b>🧭</b>지도</button><button data-t="1"><b>🏠</b>홈</button><button data-t="2"><b>📖</b>도감</button></div>
  <div id="se"><div class="pn"><button class="pnx" id="sex">✕</button><h2>설정</h2>
   <div class="sr">효과음<button class="tg" id="se_s" aria-label="효과음"></button></div>
   <div class="sr">배경음악<button class="tg" id="se_m" aria-label="배경음악"></button></div>
@@ -255,7 +268,7 @@ const H=(g,C)=>{
  const bell=(y)=>{L([108,y,152,y],7);L([108,y,152,y],3.5,C.r);O(130,y+8,8,8,C.y);L([124,y+8,136,y+8],3);L([130,y+8,130,y+14],3)};
  const bow=(y)=>{T([130,y,106,y-12,106,y+10],C.r);T([130,y,154,y-12,154,y+10],C.r);O(130,y,7,7,C.r)};
  return{E,O,T,L,sm,cloud,sky,eyes,eye,collar,bell,bow}};
-const mk=(n,k,f)=>({n,k,fx:1,d:(g,C)=>f(g,C,H(g,C))});
+window.H_=H;const mk=(n,k,f)=>({n,k,fx:1,d:(g,C)=>f(g,C,H(g,C))});
 return[
 mk('고양이','ckmoniyrg',(g,C,h)=>{const{E,O,T,L,sm,sky,eyes,bell}=h;sky();
  O(238,164,36,28,C.g);O(196,182,28,20,C.g);L([232,156,236,166],3);L([250,158,252,168],3);
@@ -462,10 +475,10 @@ function decorate(){return;const n=W*H,cnt={};for(let i=0;i<n;i++)cnt[sand[i]]=(
     const ok=sh==0?dx*dx+dy*dy<=r*r:sh==1?Math.abs(dy)<=1&&Math.abs(dx)<=r+1:Math.abs(dx)+Math.abs(dy)<=r;
     if(ok)sand[j]=col}}})}
 function start(){setTrack((wld?wld.j:lv)%3);
- const art=wld?wld.w.arts[wld.j>>1]:lv<ANIM.length?ANIM[lv]:ART[(lv-ANIM.length)%ART.length];W=130;H=100;px={};
+ const art=wld?wld.w.arts[wBi(wld.w,wld.j)]:lv<ANIM.length?ANIM[lv]:ART[(lv-ANIM.length)%ART.length];W=130;H=100;px={};
  sand=[];{const cv=document.createElement('canvas');cv.width=W*4;cv.height=H*4;const g=cv.getContext('2d');g.fillStyle=COL.c;g.fillRect(0,0,W*4,H*4);g.scale(W*4/260,H*4/200);art.d(g,art.fx?COL:Object.assign({},COL,{k:COL.e,h:COL.o,l:COL.g}));const d0=g.getImageData(0,0,W*4,H*4).data,d=new Uint8ClampedArray(W*H*4);for(let i=0;i<W*H;i++){const j=((((i/W)|0)*4+2)*W*4+(i%W)*4+2)*4;d[i*4]=d0[j];d[i*4+1]=d0[j+1];d[i*4+2]=d0[j+2]}const _u=0,ks=(art.k||'roygcbpe').split('');for(let i=0;i<W*H;i++){let b='w',e0=1e9;for(const k of ks){const q=RGB[k],e=(d[i*4]-q[0])**2+(d[i*4+1]-q[1])**2+(d[i*4+2]-q[2])**2;if(e<e0){e0=e;b=k}}sand[i]=b}decorate();for(let i=0;i<W*H;i++)(px[sand[i]]=px[sand[i]]||[]).push(i)}
  tot=W*H;pc=0;
- fit();R=Math.max(10,Math.min(26,Math.floor($("bw").clientHeight/($("bw").clientWidth/C))));const n=Math.min(80,Math.round(C*R*(.25+(wld?10+wld.j:lv)*.01)));cars=gen(n);
+ fit();R=Math.max(10,Math.min(26,Math.floor($("bw").clientHeight/($("bw").clientWidth/C))));const n=Math.min(80,Math.round(C*R*(.25+(wld?(wld.w.dif||10)+wld.j:lv)*.01)));cars=gen(n);
  const ks=Object.keys(px),cnt={};ks.forEach(k=>cnt[k]=1);
  for(let i=ks.length;i<cars.length;i++){let b=ks[0];ks.forEach(k=>{if(px[k].length/cnt[k]>px[b].length/cnt[b])b=k});cnt[b]++}
  const list=[];ks.forEach(k=>{for(let i=0;i<cnt[k];i++)list.push(k)});
@@ -600,7 +613,7 @@ if(dirty.size){let cur=dirty;dirty=new Set();gf^=1;
  if(pend.length){const sl=findSlot(pend[0]);if(sl!==null){const c=pend.shift(),hl=trLen(c)/2;c.rx=sl;c.got=0;c.vis=0;c.laps=0;c.fa=(sl*rw+hl>0&&sl*rw-hl<rw)?0:1;queue.push(c)}}
  if(took)sfxSand();if(took||ft>0)ft+=dt;{const fq=pc/tot,k=Math.min(1,fq/.6);RT=thaw||k>=1?0:1;DB=Math.max(1,H*.45*(1-k));DA=Math.max(1,W*.26*(1-k));DCY=H*.9-DB}if(took||moved){drawPic();hud()}
  if(took)queue.forEach(c=>c.laps=0);if(!won&&!paused&&queue.length&&!moved&&!parts.length&&!cars.some(c=>c.s==1)&&queue.every(c=>(c.laps||0)>=3&&c.vis<c.cap)&&(used()>=MAXS||!canTap())){if(RT>0){thaw=true;queue.forEach(c=>c.laps=0)}else showStuck()}
- if(!won&&cars.length&&cars.every(c=>c.s==2)&&!queue.length&&!pend.length){won=true;coins+=100;refresh();$("nx").textContent=wld&&wld.j+1>=wld.w.lv?"월드로":"다음 레벨";const nw=wld?wMark():markGot();$("ovt").innerHTML="클리어! 🎉<br>🚢 섬 친구를 구했어요!<br>🪙 +100"+(nw?"<br>📖 도감 등록: "+(wld?wld.w.arts[wld.j>>1].n:ANIM[lv].n):"");{const oc=$("ovc");if(wld||lv<PETN){oc.style.display="block";blinkOn(oc,wld?wld.w.id+"."+(wld.j>>1):lv,()=>$("ov").style.display!="none")}else oc.style.display="none"}$("ov").style.display="flex";winFx()}
+ if(!won&&cars.length&&cars.every(c=>c.s==2)&&!queue.length&&!pend.length){won=true;coins+=100;refresh();$("nx").textContent=wld&&wld.j+1>=wld.w.lv?"지도로":"다음 레벨";const nw=wld?wMark():markGot();$("ovt").innerHTML="클리어! 🎉<br>🚢 섬 친구를 구했어요!<br>🪙 +100"+(nw?"<br>📖 도감 등록: "+(wld?wld.w.arts[wBi(wld.w,wld.j)].n:ANIM[lv].n):"");{const oc=$("ovc");if(wld||lv<PETN){oc.style.display="block";blinkOn(oc,wld?wld.w.id+"."+wBi(wld.w,wld.j):lv,()=>$("ov").style.display!="none")}else oc.style.display="none"}$("ov").style.display="flex";winFx()}
  bx.clearRect(0,0,C*cs,R*cs);
  bx.fillStyle="rgba(255,255,255,.2)";rr(0,0,C*cs,R*cs,14);
  cars.forEach(c=>{if(c.s<2)drawCar(c)});
@@ -885,6 +898,52 @@ function drawShop(){const l=$("shl");l.innerHTML="";refresh();
  const ad=document.createElement('div');ad.className='shr';ad.innerHTML='<div class="ic">🎬</div><div>무료 코인<small>광고 보기 (테스트용 가짜 광고)</small></div>';const ab=document.createElement('button');ab.className='ad';ab.textContent='+100';ab.onclick=()=>{coins+=100;refresh();save();gtoast('🪙 +100')};ad.appendChild(ab);l.appendChild(ad);
  for(const [n,sub] of [['광고 제거','앱으로 만든 뒤에 열려요'],['코인 팩','앱으로 만든 뒤에 열려요']]){const r=document.createElement('div');r.className='shr';r.innerHTML='<div class="ic">⭐</div><div>'+n+'<small>'+sub+'</small></div>';const b=document.createElement('button');b.className='dis';b.textContent='준비 중';r.appendChild(b);l.appendChild(r)}}
 // ---- worlds
+const SAVF={
+ giraffe:(g,C,h)=>{const{E,O,T,L,sm,sky,eyes}=h;sky();
+  O(130,198,66,42,C.y);
+  T([106,86,154,86,164,176,96,176],C.y);
+  [[122,108,9,6],[144,124,10,7],[118,142,10,7],[146,158,9,6]].forEach(p=>E(p[0],p[1],p[2],p[3],C.n));
+  [[90,190,10,7],[170,188,11,8],[130,198,9,6]].forEach(p=>E(p[0],p[1],p[2],p[3],C.n));
+  L([118,32,116,16],5);O(116,14,6,6,C.n);L([142,32,144,16],5);O(144,14,6,6,C.n);
+  O(94,52,14,8,C.y,-.5);O(166,52,14,8,C.y,.5);E(95,52,7,3.5,C.i,-.5);E(165,52,7,3.5,C.i,.5);
+  O(130,62,36,30,C.y);E(130,78,22,14,C.m);E(122,76,2.5,3,C.k);E(138,76,2.5,3,C.k);
+  eyes(56,17,8);sm(130,83,9);E(104,70,7,4,C.i);E(156,70,7,4,C.i);[[112,40],[148,42]].forEach(p=>E(p[0],p[1],4,3,C.n)) },
+ zebra:(g,C,h)=>{const{E,O,T,L,sm,sky,eyes}=h;sky();
+  O(130,198,62,38,C.m);[[96,172,100,196],[114,170,116,198],[146,170,144,198],[164,172,160,196]].forEach(p=>L(p,6));
+  O(98,50,11,19,C.m,-.25);O(162,50,11,19,C.m,.25);E(98,52,4,11,C.i,-.25);E(162,52,4,11,C.i,.25);
+  O(130,98,40,56,C.m);
+  [[91,82,101,85],[90,98,98,99],[169,82,159,85],[170,98,162,99],[93,116,104,116],[167,116,156,116]].forEach(p=>L(p,5));
+  T([114,38,146,38,138,70,122,70],C.k);L([130,58,130,86],5);
+  O(130,128,27,21,C.e);E(121,128,3,4.5,C.k);E(139,128,3,4.5,C.k);sm(130,140,8);
+  eyes(100,23,8);E(94,114,7,4,C.i);E(166,114,7,4,C.i)},
+ hippo:(g,C,h)=>{const{E,O,T,L,sm,sky,eye}=h;sky();
+  O(130,178,70,38,C.e);
+  O(88,58,11,11,C.e);O(172,58,11,11,C.e);E(88,59,5,5,C.i);E(172,59,5,5,C.i);
+  O(130,104,66,54,C.e);
+  O(102,66,14,13,C.e);O(158,66,14,13,C.e);eye(102,67,8);eye(158,67,8);
+  O(130,128,54,33,C.i);E(110,118,5,3.5,C.k);E(150,118,5,3.5,C.k);
+  sm(130,134,16);T([108,144,116,144,112,153],C.m);T([144,144,152,144,148,153],C.m);
+  E(76,112,8,5,C.i);E(184,112,8,5,C.i)},
+ meer:(g,C,h)=>{const{E,O,T,L,sm,sky,eye}=h;sky();
+  g.lineCap='round';const tp=()=>{g.beginPath();g.moveTo(168,190);g.bezierCurveTo(206,196,222,164,210,128)};tp();g.lineWidth=17;g.strokeStyle=C.k;g.stroke();tp();g.lineWidth=9;g.strokeStyle=C.n;g.stroke();
+  O(130,176,44,46,C.n);E(130,184,25,34,C.m);[[96,160,110,164],[96,174,108,176],[164,160,150,164],[164,174,152,176]].forEach(p=>L(p,4));
+  O(94,152,10,20,C.n,.35);O(166,152,10,20,C.n,-.35);
+  O(94,84,9,11,C.n);O(166,84,9,11,C.n);E(94,85,4,5,C.i);E(166,85,4,5,C.i);
+  O(130,100,42,40,C.m);E(130,70,38,16,C.n);L([96,76,164,76],0.1);
+  E(106,98,15,17,C.k,.15);E(154,98,15,17,C.k,-.15);E(106,98,8,10,C.m,.15);E(154,98,8,10,C.m,-.15);E(107,99,4.5,6,C.k);E(153,99,4.5,6,C.k);E(105,96,1.6,2,C.m);E(151,96,1.6,2,C.m);
+  E(130,114,8,6,C.k);sm(130,120,8);E(94,118,7,4,C.i);E(166,118,7,4,C.i)}
+};
+function savArt(n,intro,fn,bl){return{n,i:intro,k:'ckmoniyrgebpc',fx:1,d:(g,C,bk)=>{fn(g,C,H_(g,C));if(bk&&bl)for(const[x,y,r]of bl[1]){g.beginPath();g.ellipse(x,y,r+1.5,r+2.5,0,0,7);g.fillStyle=C[bl[0]];g.fill();g.beginPath();g.arc(x,y-1,r*.65,.12*Math.PI,.88*Math.PI);g.lineWidth=3.5;g.lineCap='round';g.strokeStyle=C.k;g.stroke()}}}}
+function fromAnim(nm,intro,bl){const a=ANIM.find(x=>x.n==nm);return{n:nm,i:intro,k:'ckmoniyrgebpc',fx:1,d:(g,C,bk)=>{a.d(g,C);if(bk)for(const[x,y,r]of bl[1]){g.beginPath();g.ellipse(x,y,r+1.5,r+2.5,0,0,7);g.fillStyle=C[bl[0]];g.fill();g.beginPath();g.arc(x,y-1,r*.65,.12*Math.PI,.88*Math.PI);g.lineWidth=3.5;g.lineCap='round';g.strokeStyle=C.k;g.stroke()}}}}
+const SAVARTS=()=>[
+ fromAnim('사자','갈기를 휘날리며 사바나를 지키는 용감한 왕',['y',[[113,94,8],[147,94,8]]]),
+ fromAnim('코끼리','긴 코로 물을 뿌리는 마음 넓은 큰 친구',['e',[[110,84,8],[150,84,8]]]),
+ savArt('기린','높은 곳에서 제일 먼저 아침 해를 보는 키다리 친구',SAVF.giraffe,['y',[[113,56,8],[147,56,8]]]),
+ savArt('얼룩말','줄무늬 옷이 멋진 달리기 선수',SAVF.zebra,['m',[[107,100,8],[153,100,8]]]),
+ savArt('하마','물속이 제일 편한 느긋한 친구',SAVF.hippo,['e',[[102,67,8],[158,67,8]]]),
+ savArt('미어캣','꼿꼿이 서서 망을 보는 사바나의 경비병',SAVF.meer,['m',[[106,98,7],[154,98,7]]])
+];
+
 let wown={},wp={},wld=null;
 const WPRICE=5000,WBUNDLE=9000;
 const oE=(g,x,y,a,b,f,r=0)=>{g.fillStyle=f;g.beginPath();g.ellipse(x,y,a,b,r,0,7);g.fill()};
@@ -901,7 +960,7 @@ const OV={
 };
 function mkBreed(base,n,intro,sub,ov){const a=ANIM[base];return{n,i:intro,k:'ckmoniyrgebpc',fx:1,d:(g,C,bk)=>{const C2=Object.assign({},C);for(const q in sub)C2[q]=C[sub[q]];a.d(g,C2,bk);if(ov)ov(g,C)}}}
 const WORLDS=[
- {id:'cat',nm:'고양이 월드',ico:'🐱',lv:20,base:0,desc:'치즈, 샴, 러시안블루…\n고양이 10종을 모으는 20판짜리 모험',
+ {id:'cat',nm:'고양이 섬',ico:'🐱',lv:20,base:0,desc:'치즈, 샴, 러시안블루…\n고양이 10종을 모으는 20판짜리 모험',
   br:[['치즈냥이','햇볕 아래 낮잠을 제일 좋아하는 주황 줄무늬 친구',{o:'o',r:'r'}],
       ['러시안블루','은빛 털이 반짝이는 조용하고 우아한 친구',{o:'e',r:'b'}],
       ['터키시앙고라','솜털처럼 하얀 털을 가진 도도한 친구',{o:'m',r:'c'}],
@@ -912,7 +971,7 @@ const WORLDS=[
       ['스코티시폴드','줄무늬 털에 동글동글 귀여운 친구',{o:'e',r:'o'},OV.stripes('k')],
       ['페르시안','푹신푹신 구름 같은 털을 가진 귀족 친구',{o:'m',r:'p'},OV.headP('e','e')],
       ['먼치킨','짧은 다리로 총총 뛰는 양말 신은 친구',{o:'y',r:'b'},OV.feet('m')]]},
- {id:'dog',nm:'강아지 월드',ico:'🐶',lv:20,base:1,desc:'골든리트리버, 시바, 푸들…\n강아지 10종을 모으는 20판짜리 모험',
+ {id:'dog',nm:'강아지 섬',ico:'🐶',lv:20,base:1,desc:'골든리트리버, 시바, 푸들…\n강아지 10종을 모으는 20판짜리 모험',
   br:[['골든리트리버','다정하고 꼬리를 살랑살랑 흔드는 노란 친구',{y:'y',n:'o',o:'y',r:'r'}],
       ['시바견','쫑긋 귀에 도도한 미소를 가진 친구',{y:'o',n:'o',o:'m',r:'g'}],
       ['말티즈','하얀 솜사탕 같은 작고 귀여운 친구',{y:'m',n:'m',o:'m',r:'c'}],
@@ -924,27 +983,31 @@ const WORLDS=[
       ['웰시코기','짧은 다리로 통통 뛰는 엉덩이 부자',{y:'o',n:'y',o:'m',r:'g'}],
       ['불독','듬직한 얼굴에 마음은 따뜻한 친구',{y:'e',n:'n',o:'m',r:'o'}]]}
 ];
-WORLDS.forEach(w=>{w.price=WPRICE;w.arts=w.br.map(b=>mkBreed(w.base,b[0],b[1],b[2],b[3]))});
+WORLDS.unshift({id:'sav',nm:'사바나 해안',ico:'🦁',lv:18,dif:14,desc:'사자, 코끼리, 기린…\n사바나 친구 6종을 구하는 18판짜리 항해',arts:SAVARTS()});
+WORLDS.forEach(w=>{w.price=WPRICE;if(!w.arts)w.arts=w.br.map(b=>mkBreed(w.base,b[0],b[1],b[2],b[3]))});
+function wBi(w,j){return Math.min(w.arts.length-1,Math.floor(j*w.arts.length/w.lv))}
 function wArt(id){const p=id.split('.'),w=WORLDS.find(x=>x.id==p[0]);return w.arts[+p[1]]}
 function wGot(w){let n=0;for(let b=0;b<w.arts.length;b++)if(got[w.id+'.'+b])n++;return n}
-function wMark(){const w=wld.w,k=w.id+'.'+(wld.j>>1),nw=!got[k];got[k]=1;wp[w.id]=Math.max(wp[w.id]||0,wld.j+1);save();return nw}
+function wMark(){const w=wld.w,k=w.id+'.'+wBi(w,wld.j),nw=!got[k];got[k]=1;wp[w.id]=Math.max(wp[w.id]||0,wld.j+1);save();return nw}
 function cvOf(id,cls){const c=document.createElement('canvas');c.width=130;c.height=100;c.getContext('2d').drawImage(artCv(id),0,0);return c}
 function drawWorlds(){const l=$("wls");l.innerHTML='';refresh();
- WORLDS.forEach(w=>{const own=!!wown[w.id],c=document.createElement('div');c.className='wc';c.appendChild(cvOf(w.id+'.0'));
-  const t=document.createElement('div');t.style.flex='1';t.innerHTML=w.nm+'<small>'+w.arts.length+'종 · 레벨 '+w.lv+'개</small>'+(own?'<small>모은 친구 '+wGot(w)+' / '+w.arts.length+'</small>':'');
-  const b=document.createElement('button');b.textContent=own?'이어하기':'🪙 '+w.price;t.appendChild(b);c.appendChild(t);c.onclick=()=>own?openWMap(w):openWInfo(w);l.appendChild(c)});
- const both=WORLDS.every(w=>wown[w.id]);
- if(!both){const c=document.createElement('div');c.className='wc bd';c.innerHTML='<canvas width="130" height="100"></canvas><div style="flex:1">고양이 + 강아지 묶음<small>20종 · 레벨 40개 · 묶음 할인</small></div>';
-  const cv=c.querySelector('canvas').getContext('2d');cv.drawImage(artCv('cat.0'),0,0,65,100,0,0,65,100);cv.drawImage(artCv('dog.0'),65,0,65,100,65,0,65,100);
-  const b=document.createElement('button');b.textContent='🪙 '+WBUNDLE+' (할인)';c.lastChild.appendChild(b);
-  c.onclick=()=>{const need=WORLDS.filter(w=>!wown[w.id]);const price=need.length==2?WBUNDLE:WPRICE;if(coins<price){gtoast('코인이 부족해요');return}coins-=price;need.forEach(w=>{wown[w.id]=1;wp[w.id]=wp[w.id]||0});refresh();save();drawWorlds();gtoast('월드를 열었어요!')};
-  l.appendChild(c)}
- const o=document.createElement('div');o.className='wc off';o.innerHTML='<canvas width="130" height="100"></canvas><div style="flex:1">관상어 월드<small>곧 열려요 (업데이트 예정)</small></div>';l.appendChild(o)}
+ const N=WORLDS.length+2,GAP=172,Ht=N*GAP+60,xs=[28,72],pos=i=>({x:xs[i%2],y:70+i*GAP});
+ l.style.cssText='position:relative;height:'+Ht+'px';
+ let d='';for(let i=0;i<N;i++){const p=pos(i);d+=(i?' C '+pos(i-1).x+' '+(pos(i-1).y+GAP*.55)+', '+p.x+' '+(p.y-GAP*.55)+', '+p.x+' '+p.y:'M'+p.x+' '+p.y)}
+ l.insertAdjacentHTML('beforeend','<svg viewBox="0 0 100 '+Ht+'" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:'+Ht+'px"><path d="'+d+'" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="4" stroke-dasharray="2 11" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>');
+ const node=(i,ic,nm,sub,cls,fn)=>{const p=pos(i),e=document.createElement('div');e.className='mn '+(cls||'');e.style.left=p.x+'%';e.style.top=p.y+'px';
+  const c=document.createElement('div');c.className='mi';if(typeof ic=='string'){c.innerHTML='<span>'+ic+'</span>'}else c.appendChild(ic);e.appendChild(c);
+  const t=document.createElement('div');t.className='ml';t.innerHTML=nm+'<small>'+sub+'</small>';e.appendChild(t);e.onclick=fn;l.appendChild(e);return e};
+ const home=node(0,'🏝️','고향 바다','Level '+(lv+1)+' · 이어하기','home',()=>{$("wl").style.display="none";$("go").click()});
+ const boat=document.createElement('div');boat.className='mb';boat.textContent='⛵';home.appendChild(boat);
+ WORLDS.forEach((w,k)=>{const own=!!wown[w.id],cv=cvOf(w.id+'.0');
+  node(k+1,cv,w.nm,own?wGot(w)+' / '+w.arts.length+' 구출':'🪙 '+w.price,own?'':'lk',()=>own?openWMap(w):openWInfo(w))});
+ node(N-1,'❓','새로운 바다','곧 열려요','lk soon',()=>gtoast('곧 열려요!'))}
 function openWInfo(w){paused=true;$("wl").style.display="none";$("tb").style.display="none";$("wm").style.display="none";
  $("wit").textContent=w.nm;$("wih").getContext('2d').drawImage(artCv(w.id+'.0'),0,0);$("wid").innerHTML=w.desc.replace('\n','<br>');
  const g=$("wig");g.innerHTML='';w.arts.forEach((a,b)=>{const d=document.createElement('div');d.className='lk';d.appendChild(cvOf(w.id+'.'+b));g.appendChild(d)});
- $("wil").innerHTML='· 레벨 '+w.lv+'개 · 품종 '+w.arts.length+'종<br>· 사면 이 월드에서 친구를 모아요<br>· 업데이트 때 스페셜 칸이 추가돼요 (별도 구매)';
- $("wib2").textContent='🪙 '+w.price+' 코인으로 열기';$("wib2").onclick=()=>{if(coins<w.price){gtoast('코인이 부족해요 (보유 '+coins+')');return}coins-=w.price;wown[w.id]=1;wp[w.id]=wp[w.id]||0;refresh();save();gtoast('월드를 열었어요!');openWMap(w)};
+ $("wil").innerHTML='· 레벨 '+w.lv+'개 · 친구 '+w.arts.length+'종<br>· 해역을 열면 이곳 친구들을 구할 수 있어요<br>· 업데이트 때 스페셜 칸이 추가돼요 (별도 구매)';
+ $("wib2").textContent='🪙 '+w.price+' 코인으로 열기';$("wib2").onclick=()=>{if(coins<w.price){gtoast('코인이 부족해요 (보유 '+coins+')');return}coins-=w.price;wown[w.id]=1;wp[w.id]=wp[w.id]||0;refresh();save();gtoast('해역을 열었어요!');openWMap(w)};
  $("wib").onclick=()=>goTab(3);$("wi").style.display="flex";$("wi").scrollTop=0}
 function openWMap(w){paused=true;$("wl").style.display="none";$("wi").style.display="none";$("tb").style.display="none";$("wm").style.display="flex";$("wm").scrollTop=0;
  const n=wGot(w),cur=Math.min(wp[w.id]||0,w.lv);
