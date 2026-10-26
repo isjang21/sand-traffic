@@ -21,10 +21,11 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #its button{flex:1;background:var(--slot);color:var(--tx);padding:5px 2px;font-size:12px;border-radius:8px}
 #its #ps{flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:#2f5fd0;font-size:11px;border:2px solid #cfe0ff}
 #top{display:flex;justify-content:center;flex:none;padding:14px 0 18px}
-#pw{flex:none;position:relative;padding:54px 10px 0;border-radius:36px 36px 10px 10px;background:linear-gradient(#f9e6ae,#ecc982);box-shadow:0 0 0 5px rgba(255,255,255,.85),0 0 0 12px rgba(255,255,255,.28)}
-#pw canvas#pic{border-radius:22px 22px 0 0;display:block}
-.pm{position:absolute;top:-26px;width:92px;height:84px;pointer-events:none;overflow:visible}
-#pw .pl{left:2px}#pw .pr{right:2px;transform:scaleX(-1)}
+#pw{flex:none;position:relative;padding:36px 0 0;border-radius:36px 36px 10px 10px;background:linear-gradient(#f9e6ae,#ecc982);box-shadow:0 0 0 5px rgba(255,255,255,.85),0 0 0 12px rgba(255,255,255,.28)}
+#pw canvas#pic{border-radius:0 0 8px 8px;display:block}
+.sd{position:absolute;top:12px;font-size:19px;line-height:1;pointer-events:none;filter:drop-shadow(0 1px 0 rgba(160,110,40,.35))}
+.pm{position:absolute;top:-10px;width:48px;height:44px;pointer-events:none;overflow:visible}
+#pw .pl{left:6px}#pw .pr{right:6px;transform:scaleX(-1)}
 #bubs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .bub{position:absolute;border-radius:50%;border:1.5px solid rgba(255,255,255,.95);background:rgba(255,255,255,.35);animation:bub 3.2s ease-in infinite;opacity:0}
 @keyframes bub{0%{transform:translate(0,0) scale(.5);opacity:0}12%{opacity:1}100%{transform:translate(var(--dx),-70px) scale(1.15);opacity:0}}
@@ -32,8 +33,10 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #tp{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:none}
 #hb{width:42px;height:42px;padding:0;border-radius:50%;background:#fff;color:#1d5c52;font-size:20px;border:3px solid #bfe3d6;box-shadow:0 3px 0 rgba(0,70,110,.25)}
 #tp span{background:#fff;color:#1d5c52;border-radius:999px;padding:6px 14px;font-weight:900;font-size:14px;box-shadow:0 3px 0 rgba(0,70,110,.2)}
-#pcn{position:absolute;left:50%;bottom:-17px;transform:translateX(-50%);background:#fff;color:#1d5c52;border-radius:999px;padding:2px 12px;font-weight:800;font-size:12px;box-shadow:0 2px 0 rgba(0,70,110,.2);white-space:nowrap}
+#pcn{display:none;position:absolute;left:50%;bottom:-17px;transform:translateX(-50%);background:#fff;color:#1d5c52;border-radius:999px;padding:2px 12px;font-weight:800;font-size:12px;box-shadow:0 2px 0 rgba(0,70,110,.2);white-space:nowrap}
 #st{color:#0b4560}
+#sc{font-size:17px;font-weight:900}
+#sa{font-weight:800;font-size:14px;padding:7px 14px;border-radius:999px;box-shadow:0 3px 0 rgba(0,40,110,.35)}
 #its{display:none!important}
 #hm{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:space-between;padding:64px 20px 100px;background:radial-gradient(circle at 20% 15%,#fff7c9 0,transparent 45%),linear-gradient(#a8ecd9,#ffeec2);overflow:hidden}
 #hms{position:absolute;inset:0}
@@ -206,7 +209,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 </style></head><body>
 <canvas id="sea"></canvas><div id="bubs"></div><div id="app">
  <div id="tp"><button id="hb" aria-label="홈">🏠</button><span id="lv"></span><span id="co"></span></div>
- <div id="top"><div id="pw"><svg class="pm pl" viewBox="0 0 100 92"><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#8a5a2b" stroke-width="9" stroke-linecap="round"/><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#b07a3c" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 7"/><g fill="#2e9d46" stroke="#1c6b30" stroke-width="2" stroke-linejoin="round"><path d="M62 30 C46 12 22 14 8 30 C28 22 46 24 62 30Z"/><path d="M62 30 C54 6 34 -2 18 4 C38 8 52 18 62 30Z"/><path d="M62 30 C70 6 90 0 100 8 C84 10 70 18 62 30Z"/><path d="M62 30 C80 16 100 22 106 38 C90 30 76 28 62 30Z"/><path d="M62 30 C60 46 44 52 36 62 C44 46 54 38 62 30Z"/></g><circle cx="58" cy="35" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/><circle cx="67" cy="36" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/></svg><svg class="pm pr" viewBox="0 0 100 92"><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#8a5a2b" stroke-width="9" stroke-linecap="round"/><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#b07a3c" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 7"/><g fill="#2e9d46" stroke="#1c6b30" stroke-width="2" stroke-linejoin="round"><path d="M62 30 C46 12 22 14 8 30 C28 22 46 24 62 30Z"/><path d="M62 30 C54 6 34 -2 18 4 C38 8 52 18 62 30Z"/><path d="M62 30 C70 6 90 0 100 8 C84 10 70 18 62 30Z"/><path d="M62 30 C80 16 100 22 106 38 C90 30 76 28 62 30Z"/><path d="M62 30 C60 46 44 52 36 62 C44 46 54 38 62 30Z"/></g><circle cx="58" cy="35" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/><circle cx="67" cy="36" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/></svg><canvas id="pic"></canvas><span id="pcn"></span></div></div>
+ <div id="top"><div id="pw"><svg class="pm pl" viewBox="0 0 100 92"><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#8a5a2b" stroke-width="9" stroke-linecap="round"/><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#b07a3c" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 7"/><g fill="#2e9d46" stroke="#1c6b30" stroke-width="2" stroke-linejoin="round"><path d="M62 30 C46 12 22 14 8 30 C28 22 46 24 62 30Z"/><path d="M62 30 C54 6 34 -2 18 4 C38 8 52 18 62 30Z"/><path d="M62 30 C70 6 90 0 100 8 C84 10 70 18 62 30Z"/><path d="M62 30 C80 16 100 22 106 38 C90 30 76 28 62 30Z"/><path d="M62 30 C60 46 44 52 36 62 C44 46 54 38 62 30Z"/></g><circle cx="58" cy="35" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/><circle cx="67" cy="36" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/></svg><svg class="pm pr" viewBox="0 0 100 92"><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#8a5a2b" stroke-width="9" stroke-linecap="round"/><path d="M46 90 C44 66 50 48 62 30" fill="none" stroke="#b07a3c" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 7"/><g fill="#2e9d46" stroke="#1c6b30" stroke-width="2" stroke-linejoin="round"><path d="M62 30 C46 12 22 14 8 30 C28 22 46 24 62 30Z"/><path d="M62 30 C54 6 34 -2 18 4 C38 8 52 18 62 30Z"/><path d="M62 30 C70 6 90 0 100 8 C84 10 70 18 62 30Z"/><path d="M62 30 C80 16 100 22 106 38 C90 30 76 28 62 30Z"/><path d="M62 30 C60 46 44 52 36 62 C44 46 54 38 62 30Z"/></g><circle cx="58" cy="35" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/><circle cx="67" cy="36" r="5" fill="#6b4220" stroke="#3d2511" stroke-width="1.5"/></svg><span class="sd" style="left:30%">🐚</span><span class="sd" style="left:46%">🪸</span><span class="sd" style="left:62%">⭐</span><span class="sd" style="left:38%;top:16px;font-size:15px">🐚</span><span class="sd" style="left:55%;top:15px;font-size:15px">🪸</span><canvas id="pic"></canvas><span id="pcn"></span></div></div>
  <canvas id="road"></canvas>
  <div id="st"><span id="sc"></span><button id="sa">＋선착장 100🪙</button></div>
  <div id="bw"><canvas id="bd"></canvas><div id="toast"></div><div id="cp"></div><div id="ov"><div id="ovt"></div><canvas id="ovc" width="130" height="100"></canvas><button id="nx">다음 레벨</button><button id="nxh">홈으로</button></div></div>
@@ -474,7 +477,7 @@ function start(){setTrack((wld?wld.j:lv)%3);
  pic.width=W;pic.height=H;
   fit();drawPic();hud();refresh()}
 function hud(){$("lv").textContent=wld?wld.w.ico+" "+(wld.j+1)+"/"+wld.w.lv:"Level "+(lv+1);$("pcn").textContent="모래 "+Math.round((1-pc/tot)*100)+"%"}
-function fit(){{const ap=$("app"),aw=ap.clientWidth-20,pw=Math.min(aw*.76,(ap.clientHeight-250)*.42*W/H);pic.style.maxHeight="none";pic.style.height=pw*H/W+"px";window.PW=pw;pic.style.width=pw+"px";pic.style.alignSelf="center";rd.style.alignSelf="center"}const w=$("bw").clientWidth,h=$("bw").clientHeight;cs=Math.floor(Math.min(w/C,h/R));
+function fit(){{const ap=$("app"),aw=ap.clientWidth-20,pw=Math.min(aw*.76,(ap.clientHeight-215)*.42*W/H);pic.style.maxHeight="none";pic.style.height=pw*H/W+"px";window.PW=pw;pic.style.width=pw+"px";pic.style.alignSelf="center";rd.style.alignSelf="center"}const w=$("bw").clientWidth,h=$("bw").clientHeight;cs=Math.floor(Math.min(w/C,h/R));
  const d=window.devicePixelRatio||1;rd.style.width=C*cs+"px";rd.style.height=Math.max(28,Math.round(PW*.11))+"px";{const d2=window.devicePixelRatio||1;rw=rd.clientWidth;rh=rd.clientHeight;rd.width=rw*d2;rd.height=rh*d2;rx2.setTransform(d2,0,0,d2,0,0)}bd.style.width=C*cs+"px";bd.style.height=R*cs+"px";bd.width=C*cs*d;bd.height=R*cs*d;bx.setTransform(d,0,0,d,0,0);window.OF=pic.getBoundingClientRect().left-rd.getBoundingClientRect().left;drawSea()}
 function drawSea(){const cv=$("sea"),d=window.devicePixelRatio||1,w=innerWidth,h=innerHeight;cv.width=w*d;cv.height=h*d;const g=cv.getContext('2d');g.setTransform(d,0,0,d,0,0);
  g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=2;g.lineCap='round';
@@ -505,7 +508,7 @@ function drawCar(c){const [dx,dy]=V[c.d],h=hz(c),pad=cs*.06;
  const x1=Lc/2-pad,x0=x1-Math.min(Lc-2*pad,cs*.77*c.L),cab=cs*.4,ys=-wd/2+pad,hw=wd-pad*2;
  const hull=dy=>{bx.beginPath();bx.moveTo(x0+hw*.25,ys+dy);bx.lineTo(x1-hw*.55,ys+dy);bx.quadraticCurveTo(x1-hw*.1,ys+dy+hw*.12,x1,ys+dy+hw/2);bx.quadraticCurveTo(x1-hw*.1,ys+dy+hw*.88,x1-hw*.55,ys+dy+hw);bx.lineTo(x0+hw*.25,ys+dy+hw);bx.quadraticCurveTo(x0,ys+dy+hw,x0,ys+dy+hw/2);bx.quadraticCurveTo(x0,ys+dy,x0+hw*.25,ys+dy);bx.closePath()};
  bx.fillStyle="rgba(0,40,80,.28)";hull(3);bx.fill();
- bx.fillStyle=COL[c.k];hull(0);bx.fill();bx.lineWidth=c.k=='k'?1.6:1.3;bx.strokeStyle=c.k=='k'?'rgba(255,255,255,.6)':'rgba(10,30,60,.55)';bx.stroke();
+ bx.fillStyle=COL[c.k];hull(0);bx.fill();bx.lineWidth=c.k=='k'?1.6:1.3;bx.strokeStyle=c.k=='k'?'rgba(255,255,255,.65)':'rgba(5,35,70,.7)';bx.stroke();
  bx.fillStyle='rgba(255,255,255,.3)';bx.beginPath();bx.roundRect(x0+hw*.2,ys+hw*.2,Math.max(hw*.3,x1-x0-hw*1.05),hw*.6,hw*.2);bx.fill();
  
  const bc=(x0+x1)/2,s=cs*.22;bx.fillStyle="#fff";bx.strokeStyle="rgba(30,30,50,.85)";bx.lineWidth=2;bx.beginPath();bx.moveTo(bc+s*1.3,0);bx.lineTo(bc-s*.4,-s);bx.lineTo(bc-s*.4,s);bx.closePath();bx.fill();bx.stroke();
