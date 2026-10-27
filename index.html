@@ -121,9 +121,9 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #tb button b{font-size:18px;line-height:1}
 #tb button.on{background:#d9f5ea;color:#0f7a55}
 #hm #stb,#hco,#atb{position:absolute;top:max(14px,env(safe-area-inset-top));z-index:3;height:34px;padding:0 12px;border:0;border-radius:17px;background:#fff;color:#1d5c52;font-size:13.5px;font-weight:800;line-height:1;display:flex;align-items:center;gap:5px;box-shadow:0 3px 0 rgba(31,143,122,.25)}
-#hm #stb{left:14px;width:34px;padding:0;justify-content:center}
-#atb{left:58px}
-#hco{right:14px}
+#hm #stb{left:14px}
+#hco{left:50%;transform:translateX(-50%)}
+#atb{right:14px}
 .ti{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 #atd{position:absolute;right:-3px;top:-3px;width:11px;height:11px;border-radius:50%;background:#e23b3b;border:2px solid #fff;display:none}
 #sh,#se,#at,#sp{position:fixed;inset:0;display:none;flex-direction:column;color:#1d5c52;font-family:system-ui,-apple-system,"Apple SD Gothic Neo",sans-serif}
@@ -245,7 +245,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
  <div id="its"><button id="it_t"></button><button id="it_m"></button><button id="it_s"></button><button id="ps">❚❚</button></div>
  <div id="ev"><div id="evt"></div><button id="ev1"></button><button id="ev2"></button><button id="ev3">처음부터 다시</button></div>
  <div id="adx"><div id="adk"></div><div id="adb"><div id="adi">📺</div><div id="adt"></div><div id="adp"><i></i></div></div><button id="adc">✕</button></div><div id="sd"><div id="sdt"></div><button id="sd0"></button><button id="sd1"></button><button id="sd2"></button><button id="sdx">닫기</button></div>
- <div id="hm"><div id="hms"></div><div class="dn"></div><button id="stb" aria-label="설정"><svg class="ti" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.6"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.4 5.4l2 2M16.6 16.6l2 2M18.6 5.4l-2 2M7.4 16.6l-2 2"/></svg></button><div id="hco"></div><button id="atb"><svg class="ti" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>출석<i id="atd"></i></button><div id="ttl"></div><button id="go"></button><button id="dgb" style="display:none">📖 도감</button></div>
+ <div id="hm"><div id="hms"></div><div class="dn"></div><button id="stb" aria-label="설정"><svg class="ti" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" fill-rule="evenodd" d="M10.03 4.66 L10.16 1.56 L13.84 1.56 L13.97 4.66 L15.80 5.42 L18.08 3.32 L20.68 5.92 L18.58 8.20 L19.34 10.03 L22.44 10.16 L22.44 13.84 L19.34 13.97 L18.58 15.80 L20.68 18.08 L18.08 20.68 L15.80 18.58 L13.97 19.34 L13.84 22.44 L10.16 22.44 L10.03 19.34 L8.20 18.58 L5.92 20.68 L3.32 18.08 L5.42 15.80 L4.66 13.97 L1.56 13.84 L1.56 10.16 L4.66 10.03 L5.42 8.20 L3.32 5.92 L5.92 3.32 L8.20 5.42Z M15.4 12a3.4 3.4 0 1 0-6.8 0a3.4 3.4 0 1 0 6.8 0Z"/></svg>설정</button><div id="hco"></div><button id="atb"><svg class="ti" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>출석<i id="atd"></i></button><div id="ttl"></div><button id="go"></button><button id="dgb" style="display:none">📖 도감</button></div>
  <div id="dg"><div id="dgh"><b>📖 친구 도감</b><button id="dgx">✕</button></div><div id="dgt"></div><div id="dgp"><i></i></div><div id="dgc"></div><div id="dgg"></div><div id="dgl" style="display:none"></div><button id="dgr" style="display:none">기록 초기화</button></div>
  <div id="dgd"><canvas width="130" height="100"></canvas><div id="dgn"></div><div id="dgi"></div><small>화면을 누르면 닫혀요</small></div>
  <div id="pz"><div id="pzb"><div id="pzt">일시정지</div><button id="pzx">✕</button><div id="pzs"><button id="pm">🎵</button><button id="pv">🔊</button></div><div id="pzr"><button id="pe">종료</button><button id="pc2">계속</button></div></div></div>
@@ -642,7 +642,7 @@ if(dirty.size){let cur=dirty;dirty=new Set();gf^=1;
  fx=fx.filter(p=>{p.t+=dt;return p.t<p.d});drawRoad();drawFx();if(++fr%10==0)refresh();;
  requestAnimationFrame(loop)}
 const IT=[["t","🔧 집게"],["m","🧲 자석"],["s","🔀 쉐이크"]];
-const COI='<svg class="ti" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg>';
+const COI='<svg class=\"ti\" viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"10\" fill=\"#ffc83d\" stroke=\"#c98a0b\" stroke-width=\"1.8\"/><circle cx=\"12\" cy=\"12\" r=\"6.3\" fill=\"none\" stroke=\"#e39a12\" stroke-width=\"1.8\"/><path d=\"M9.2 9.4a4 4 0 0 1 2.6-1.4\" stroke=\"#fff\" stroke-width=\"1.6\" fill=\"none\"/></svg>';
 function refresh(){saveSoon();const cd=coins-pendC;$("co").innerHTML=COI+cd;$("hco").innerHTML=COI+cd;$("shc").textContent="🪙 "+cd;$("wlc").textContent="🪙 "+cd;$("sc").textContent="선착장 "+used()+"/"+MAXS;IT.forEach(([k,n])=>$("it_"+k).textContent=n+" "+(items[k]>0?items[k]:"＋"))}
 function useItem(k){if(items[k]>0)items[k]--;else coins-=300;refresh()}
 function canUse(k){if(items[k]>0||coins>=300)return true;toast("코인이 부족해요");return false}
