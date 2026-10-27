@@ -985,6 +985,7 @@ function clPush(j){clJ=j;if(!CL)return;clearTimeout(clPush.t);clPush.t=setTimeou
 async function clInit(){try{if(!(window.claude&&claude.use))return;const [db,u]=await Promise.all([claude.use("db"),claude.use("user")]);if(!db||!u)return;const id=await u.id();if(!id)return;const ref=db.doc("data/users/"+id+"/save"),sn=await ref.get();
  if(sn.exists){const d=sn.data();if(d&&typeof d.j=='string'&&(d.t|0)>localT){let ok=false;try{localStorage.setItem(SK,d.j);ok=localStorage.getItem(SK)===d.j}catch(e){}if(ok){location.reload();return}loadFrom(d.j);buildHome();$("go").textContent="레벨 "+(lv+1)+" 시작";refresh()}else CL=ref}
  CL=ref;if(!sn.exists||clJ||localT>((sn.data()||{}).t|0))clPush(clJ||mkJ())}catch(e){}}
+async function resetAll(){clearTimeout(svT);clearTimeout(clPush.t);clJ=null;try{if(CL)await CL.set({j:'',t:0})}catch(e){}try{localStorage.removeItem(SK)}catch(e){}location.reload()}
 function markGot(){if(lv>=ANIM.length||lv>9)return false;const nw=!got[lv];got[lv]=1;save();return nw}
 const PETN=10;function gotN(){let n=0;for(let i=0;i<PETN;i++)if(got[i])n++;return n}
 const thumbC={};
@@ -1012,7 +1013,7 @@ function drawDg(){const n=gotN();$("dgt").innerHTML="";TABS.forEach((t,i)=>{cons
 $("dgb").onclick=()=>{refresh();drawDg();$("dg").style.display="flex"};
 $("dgx").onclick=()=>{showHome()};
 $("dgd").onclick=()=>{$("dgd").style.display="none"};
-$("dgr").onclick=()=>{if(!rstArm){rstArm=1;$("dgr").textContent="정말 지울까요? 한 번 더 누르세요";setTimeout(()=>{if(rstArm){rstArm=0;$("dgr").textContent="기록 초기화"}},3500)}else{try{localStorage.removeItem(SK)}catch(e){}location.reload()}};
+$("dgr").onclick=()=>{if(!rstArm){rstArm=1;$("dgr").textContent="정말 지울까요? 한 번 더 누르세요";setTimeout(()=>{if(rstArm){rstArm=0;$("dgr").textContent="기록 초기화"}},3500)}else{resetAll()}};
 let blinkTk=0;
 function blinkOn(cv,i,alive){const my=++blinkTk,x=cv.getContext('2d'),dr=b=>x.drawImage(artCv(i,b),0,0);dr(false);
  const loop=()=>{if(my!==blinkTk||!alive())return;setTimeout(()=>{if(my!==blinkTk||!alive())return;dr(true);setTimeout(()=>{if(my!==blinkTk)return;dr(false);if(Math.random()<.3)setTimeout(()=>{if(my!==blinkTk||!alive())return;dr(true);setTimeout(()=>{if(my!==blinkTk)return;dr(false);loop()},130)},170);else loop()},150)},1500+Math.random()*1800)};loop()}
@@ -1163,7 +1164,7 @@ $("se_m").onclick=()=>{musicOn=!musicOn;$("pm").style.opacity=musicOn?1:.35;tgSe
 $("se_v").onclick=()=>{vibOn=!vibOn;tgSet();saveSoon();if(vibOn)vib(40)};
 $("seg").onclick=()=>{save();let c='';try{c=btoa(unescape(encodeURIComponent(localStorage.getItem(SK)||'{}')))}catch(e){}const t=$("sec");t.value=c;t.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}try{navigator.clipboard&&navigator.clipboard.writeText(c).catch(()=>{})}catch(e){}gtoast(ok?'코드를 복사했어요':'코드를 길게 눌러 복사하세요')};
 $("sel").onclick=()=>{const v=$("sec").value.trim();if(!v){gtoast('코드를 붙여넣어 주세요');return}try{const j=decodeURIComponent(escape(atob(v)));const d=JSON.parse(j);if(typeof d!='object'||d===null||typeof d.lv!='number')throw 0;localStorage.setItem(SK,j);gtoast('불러왔어요!');setTimeout(()=>location.reload(),600)}catch(e){gtoast('코드가 올바르지 않아요')}};
-let rst2=0;$("ser").onclick=()=>{if(!rst2){rst2=1;$("ser").textContent='정말 지울까요? 한 번 더 누르세요';setTimeout(()=>{rst2=0;$("ser").textContent='기록 초기화'},3500)}else{try{localStorage.removeItem(SK)}catch(e){}location.reload()}};
+let rst2=0;$("ser").onclick=()=>{if(!rst2){rst2=1;$("ser").textContent='정말 지울까요? 한 번 더 누르세요';setTimeout(()=>{rst2=0;$("ser").textContent='기록 초기화'},3500)}else{resetAll()}};
 // ---- attendance
 const todayS=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 const attRw=d=>d==30?1000:(d%7==0?300:100);
