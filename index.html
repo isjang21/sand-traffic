@@ -1397,7 +1397,7 @@ function islScene(g,gm,tt){const{cx,cy,rx,ry}=gm,E=(x,y,a,b,f)=>{g.fillStyle=f;g
   for(let k=0;k<7;k++){const ph=(tt*.35+k*.31)%1;g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=2;g.beginPath();g.arc(isW*(.2+k*.11)+Math.sin(tt+k)*6,isH*.78-ph*isH*.7,3+k%3,0,7);g.stroke()}
   g.strokeStyle='#e8f6fb';g.lineWidth=8;g.strokeRect(4,4,isW-8,isH-8)}
  drawHomes(g,gm);
- for(const t of TOYS){if(t.z!=isZ||!isl.toys[t.id])continue;const p=toyPos(t,gm);emo(t.e,p.x,p.y,18)}}
+ for(const t of TOYS){if(t.z!=isZ||!isl.toys[t.id])continue;const p=toyPos(t,gm);emo(t.e,p.x,p.y,26)}}
 function toyPos(t,gm){return{x:gm.cx+t.sx*gm.rx*.85,y:gm.cy+t.sy*gm.ry*.8}}
 function islDraw(dt){const g=isG,gm=islGeo(),{cx,cy,rx,ry}=gm,tt=performance.now()/1000;g.clearRect(0,0,isW,isH);islScene(g,gm,tt);
  const E=(x,y,a,b,f)=>{g.fillStyle=f;g.beginPath();g.ellipse(x,y,a,b,0,0,7);g.fill()};
