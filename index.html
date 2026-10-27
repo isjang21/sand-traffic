@@ -955,7 +955,7 @@ function buildHome(){const n=gotN(),hi=lv<PETN?lv:lv%PETN,ok=!!got[hi],a=ANIM[hi
  hw.appendChild(hero);
  const cap=document.createElement('div');cap.className='hcap';cap.textContent=ok?a.n+' · 이미 만난 친구예요':'완성하면 도감에 등록돼요';hw.appendChild(cap);
  const gr=document.createElement('div');gr.className='hgrid';
- for(let i=0;i<PETN;i++){const d=document.createElement('div'),ok2=!!got[i];d.className=(ok2?'':'lk')+(i==hi?' cur':'');const cc=document.createElement('canvas');cc.width=130;cc.height=100;cc.getContext('2d').drawImage(artCv(i),0,0);d.appendChild(cc);d.onclick=()=>{if(ok2)replay(i);else if(i==hi)$("go").click();else gtoast('아직 만나지 못한 친구예요')};gr.appendChild(d)}
+ for(let i=0;i<PETN;i++){const d=document.createElement('div'),ok2=!!got[i];d.className=(ok2?'':'lk')+(i==hi?' cur':'');const cc=document.createElement('canvas');cc.width=130;cc.height=100;cc.getContext('2d').drawImage(artCv(i),0,0);d.appendChild(cc);d.style.gridRow=Math.floor((i%10)/5)+1;d.style.gridColumn=Math.floor(i/10)*5+(i%5)+1;d.onclick=()=>{if(ok2)replay(i);else if(i==hi)$("go").click();else gtoast('아직 만나지 못한 친구예요')};gr.appendChild(d)}
  hw.appendChild(gr);const pg=document.createElement('div');pg.className='hprog';pg.textContent='🐾 모은 친구 '+n+' / '+PETN;hw.appendChild(pg);
  const ht=document.createElement('div');ht.className='hhint';ht.textContent='만난 친구를 누르면 그 판을 다시 해요 ↻';hw.appendChild(ht);
  $('hms').innerHTML='';$('hms').appendChild(hw)}
