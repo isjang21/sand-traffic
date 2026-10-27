@@ -953,6 +953,10 @@ const thumbC={};
 function artCv(i,bk){const key=bk?i+'b':i;if(thumbC[key])return thumbC[key];const art=typeof i=="string"?wArt(i):ANIM[i],w=130,h=100,S=4,cv=document.createElement('canvas');cv.width=w*S;cv.height=h*S;const g=cv.getContext('2d');g.fillStyle=COL.c;g.fillRect(0,0,w*S,h*S);g.scale(w*S/260,h*S/200);art.d(g,COL,bk);const d0=g.getImageData(0,0,w*S,h*S).data,o=document.createElement('canvas');o.width=w;o.height=h;const og=o.getContext('2d'),im=og.createImageData(w,h),ks=art.k.split('');
  for(let p=0;p<w*h;p++){const j=((((p/w)|0)*S+2)*w*S+(p%w)*S+2)*4;let b=ks[0],e0=1e9;for(const k of ks){const q=RGB[k],e=(d0[j]-q[0])**2+(d0[j+1]-q[1])**2+(d0[j+2]-q[2])**2;if(e<e0){e0=e;b=k}}const c=RGB[b];im.data[p*4]=c[0];im.data[p*4+1]=c[1];im.data[p*4+2]=c[2];im.data[p*4+3]=255}
  og.putImageData(im,0,0);return thumbC[key]=o}
+const silC={};
+function silCv(i){if(silC[i])return silC[i];const src=artCv(i),o=document.createElement('canvas');o.width=130;o.height=100;const g=o.getContext('2d');g.drawImage(src,0,0);const im=g.getImageData(0,0,130,100),d=im.data,sk=[RGB.c,RGB.m];
+ for(let q=0;q<13000;q++){let hit=false;for(const v of sk)if(v[0]==d[q*4]&&v[1]==d[q*4+1]&&v[2]==d[q*4+2])hit=true;if(hit){d[q*4]=40;d[q*4+1]=90;d[q*4+2]=100}else{d[q*4]=10;d[q*4+1]=25;d[q*4+2]=30}}
+ g.putImageData(im,0,0);return silC[i]=o}
 let dgTab=0,rstArm=0;
 const TABS=[['🐾 애완동물'],['🦁 사파리'],['🌊 바다']];
 function drawDg(){const n=gotN();$("dgt").innerHTML="";TABS.forEach((t,i)=>{const b=document.createElement('button');b.textContent=t[0]+(i&&n<PETN?' 🔒':'');b.className=i==dgTab?'on':'';b.onclick=()=>{dgTab=i;drawDg()};$("dgt").appendChild(b)});
@@ -960,7 +964,7 @@ function drawDg(){const n=gotN();$("dgt").innerHTML="";TABS.forEach((t,i)=>{cons
  if(dgTab==0){l.style.display="none";g.style.display="grid";$("dgp").firstChild.style.width=n/PETN*100+"%";$("dgc").textContent="모은 동물 "+n+" / "+PETN+(n==PETN?"  🎉 모두 모았어요!":"  · 레벨을 클리어하면 도감에 등록돼요");
   for(let i=0;i<PETN;i++){const a=ANIM[i],d=document.createElement('div'),ok=!!got[i];d.className='dcd '+(ok?'ok':'lk')+(!ok&&i==lv?' cur':'');
    const c=document.createElement('canvas');c.width=130;c.height=100;c.getContext('2d').drawImage(artCv(i),0,0);d.appendChild(c);
-   if(!ok){const q=document.createElement('div');q.className='q';q.textContent='?';d.appendChild(q);d.classList.remove('lk');c.style.filter='brightness(0) opacity(.5)'}
+   if(!ok){d.classList.remove('lk');if(i==lv||i==lv+1){c.getContext('2d').clearRect(0,0,130,100);c.getContext('2d').drawImage(silCv(i),0,0)}else{const q=document.createElement('div');q.className='q';q.textContent='?';d.appendChild(q);c.style.filter='brightness(0) opacity(.5)'}}
    const nm=document.createElement('div');nm.className='nm';nm.textContent=ok?a.n:'???';d.appendChild(nm);const st=document.createElement('div');st.className='st';st.textContent=ok?('레벨 '+(i+1)+' 클리어 ✓'):(i==lv?'도전 중 ▶':'레벨 '+(i+1));d.appendChild(st);
    if(ok)d.onclick=()=>{const cv=$("dgd").querySelector('canvas'),x=cv.getContext('2d');blinkOn(cv,i,()=>$("dgd").style.display!="none");$("dgn").textContent=a.n;$("dgi").textContent=(INTRO[i]||"")+"  ·  레벨 "+(i+1)+" 클리어";$("dgd").style.display="flex"};
    g.appendChild(d)}}
