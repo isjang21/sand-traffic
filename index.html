@@ -173,7 +173,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #dgd{z-index:90}
 #dgi{font-size:15px;font-weight:700;opacity:.9;max-width:80vw;text-align:center;line-height:1.5}
 #nxh{background:#667;margin-top:2px}
-#ibs{display:flex;flex-direction:column;gap:16px;align-items:center;flex:1;justify-content:center}
+#ibs{display:flex;flex-direction:column;gap:16px;align-items:flex-end;flex:1;justify-content:center}
 .ib{width:40px!important;height:40px!important}
 .ib{width:38px;height:38px;border-radius:50%;padding:0!important;position:relative;background:#fff!important;border:2px solid #fff;box-shadow:0 3px 0 rgba(0,70,110,.25);display:flex;align-items:center;justify-content:center}
 .ib i{position:absolute;right:-5px;top:-5px;min-width:15px;height:15px;padding:0 3px;box-sizing:border-box;border-radius:8px;background:#ff6196;color:#fff;font-size:10px;font-style:normal;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid #fff;line-height:1}
@@ -521,7 +521,7 @@ function start(){pendC=0;setTrack((wld?wld.j:lv)%3);
  pic.width=W;pic.height=H;
   fit();drawPic();hud();refresh()}
 function hud(){$("lv").textContent=wld?wld.w.ico+" "+(wld.j+1)+"/"+wld.w.lv:"Level "+(lv+1);$("pcn").textContent="모래 "+Math.round((1-pc/tot)*100)+"%"}
-function fit(){{const ap=$("app"),aw=ap.clientWidth-20,pw=Math.min(aw*.85,aw-46,(ap.clientHeight-215)*.5*W/H);pic.style.maxHeight="none";pic.style.height=pw*H/W+"px";window.PW=pw;pic.style.width=pw+"px";pic.style.alignSelf="center";rd.style.alignSelf="center"}const w=$("bw").clientWidth,h=$("bw").clientHeight;cs=Math.floor(Math.min(w/C,h/R));
+function fit(){{const ap=$("app"),aw=ap.clientWidth-20,pw=Math.min(aw*.85,aw-46,(ap.clientHeight-215)*.5*W/H);pic.style.maxHeight="none";pic.style.height=pw*H/W+"px";window.PW=pw;pic.style.width=pw+"px";pic.style.alignSelf="center";rd.style.alignSelf="center"}const w=$("bw").clientWidth,h=$("bw").clientHeight;cs=Math.min(w/C,h/R);
  const d=window.devicePixelRatio||1;rd.style.width=C*cs+"px";rd.style.height=Math.max(28,Math.round(Math.min(PW,285)*.11))+"px";{const d2=window.devicePixelRatio||1;rw=rd.clientWidth;rh=rd.clientHeight;rd.width=rw*d2;rd.height=rh*d2;rx2.setTransform(d2,0,0,d2,0,0)}bd.style.width=C*cs+"px";bd.style.height=R*cs+"px";bd.width=C*cs*d;bd.height=R*cs*d;bx.setTransform(d,0,0,d,0,0);window.OF=pic.getBoundingClientRect().left-rd.getBoundingClientRect().left;drawSea()}
 function drawSea(){const cv=$("sea"),d=window.devicePixelRatio||1,w=innerWidth,h=innerHeight;cv.width=w*d;cv.height=h*d;const g=cv.getContext('2d');g.setTransform(d,0,0,d,0,0);
  g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=2;g.lineCap='round';
