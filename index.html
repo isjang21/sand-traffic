@@ -1292,7 +1292,10 @@ let spOpen=true,spAuto=true;
 function initSplash(){const r=$("spr");for(const nm of ['고양이','강아지','토끼','햄스터','앵무새']){const i=ANIM.findIndex(a=>a.n==nm);const c=document.createElement('canvas');c.width=130;c.height=100;c.getContext('2d').drawImage(artCv(i),0,0);r.appendChild(c)}
  requestAnimationFrame(()=>{$("spb").firstChild.style.width="100%"});{const t0=performance.now(),el=$("spp");const tk=()=>{const k=Math.min(1,(performance.now()-t0)/1250),e=1-Math.pow(1-k,2.2);el.textContent=k<1?"LOADING "+Math.round(e*100)+"%":"";if(k<1)requestAnimationFrame(tk)};tk()}setTimeout(()=>{$("spt").style.opacity='';$("spt").style.animationPlayState='running';spReady=true},1300)}
 let spReady=false;$("spt").style.animationName='none';setTimeout(()=>{$("spt").style.animationName='bl';$("spt").style.opacity=1},1300);
-$("sp").onclick=e=>{if(!spReady||e.target.id=='spi')return;$("sp").style.display="none";startMusic();showHome();stWarn();if(canAtt()&&spAuto){spAuto=false;openAt()}};
+function spGo(){if($("sp").style.display=="none")return;$("sp").style.display="none";startMusic();showHome();stWarn();if(canAtt()&&spAuto){spAuto=false;openAt()}}
+$("sp").onclick=e=>{if(!spReady||e.target.id=='spi')return;spGo()};
+setTimeout(()=>{if($("sp").style.display!="none")spGo()},2100);
+document.addEventListener("pointerdown",()=>{try{startMusic()}catch(e){}},{once:true,capture:true});
 
 // ---- i18n
 const LANGS=['ko','en','es','ja'],LNAME={ko:'한국어',en:'English',es:'Español',ja:'日本語'};
