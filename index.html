@@ -20,7 +20,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #its{justify-content:flex-end}
 #its button{flex:1;background:var(--slot);color:var(--tx);padding:5px 2px;font-size:12px;border-radius:8px}
 #its #ps{flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:#2f5fd0;font-size:11px;border:2px solid #cfe0ff}
-#top{display:flex;justify-content:flex-start;align-items:center;gap:12px;flex:none;padding:10px 0 12px}
+#top{display:flex;justify-content:flex-start;align-items:center;gap:6px;flex:none;padding:10px 0 12px}
 #pw{flex:none;position:relative;padding:32px 0 0;border-radius:36px 36px 10px 10px;background:linear-gradient(#f9e6ae,#ecc982);box-shadow:none}
 #pw canvas#pic{border-radius:0 0 8px 8px;display:block}
 .sd{position:absolute;top:12px;font-size:19px;line-height:1;pointer-events:none;filter:drop-shadow(0 1px 0 rgba(160,110,40,.35))}
@@ -174,7 +174,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 #dgi{font-size:15px;font-weight:700;opacity:.9;max-width:80vw;text-align:center;line-height:1.5}
 #nxh{background:#667;margin-top:2px}
 #ibs{display:flex;flex-direction:column;gap:16px;align-items:center;flex:1;justify-content:center}
-.ib{width:44px!important;height:44px!important}
+.ib{width:40px!important;height:40px!important}
 .ib{width:38px;height:38px;border-radius:50%;padding:0!important;position:relative;background:#fff!important;border:2px solid #fff;box-shadow:0 3px 0 rgba(0,70,110,.25);display:flex;align-items:center;justify-content:center}
 .ib i{position:absolute;right:-5px;top:-5px;min-width:15px;height:15px;padding:0 3px;box-sizing:border-box;border-radius:8px;background:#ff6196;color:#fff;font-size:10px;font-style:normal;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid #fff;line-height:1}
 .ib.on{background:#ffe9b0!important;box-shadow:0 0 0 3px #ffb300}
@@ -521,7 +521,7 @@ function start(){pendC=0;setTrack((wld?wld.j:lv)%3);
  pic.width=W;pic.height=H;
   fit();drawPic();hud();refresh()}
 function hud(){$("lv").textContent=wld?wld.w.ico+" "+(wld.j+1)+"/"+wld.w.lv:"Level "+(lv+1);$("pcn").textContent="모래 "+Math.round((1-pc/tot)*100)+"%"}
-function fit(){{const ap=$("app"),aw=ap.clientWidth-20,pw=Math.min(aw-66,(ap.clientHeight-215)*.5*W/H);pic.style.maxHeight="none";pic.style.height=pw*H/W+"px";window.PW=pw;pic.style.width=pw+"px";pic.style.alignSelf="center";rd.style.alignSelf="center"}const w=$("bw").clientWidth,h=$("bw").clientHeight;cs=Math.floor(Math.min(w/C,h/R));
+function fit(){{const ap=$("app"),aw=ap.clientWidth-20,pw=Math.min(aw*.85,aw-46,(ap.clientHeight-215)*.5*W/H);pic.style.maxHeight="none";pic.style.height=pw*H/W+"px";window.PW=pw;pic.style.width=pw+"px";pic.style.alignSelf="center";rd.style.alignSelf="center"}const w=$("bw").clientWidth,h=$("bw").clientHeight;cs=Math.floor(Math.min(w/C,h/R));
  const d=window.devicePixelRatio||1;rd.style.width=C*cs+"px";rd.style.height=Math.max(28,Math.round(Math.min(PW,285)*.11))+"px";{const d2=window.devicePixelRatio||1;rw=rd.clientWidth;rh=rd.clientHeight;rd.width=rw*d2;rd.height=rh*d2;rx2.setTransform(d2,0,0,d2,0,0)}bd.style.width=C*cs+"px";bd.style.height=R*cs+"px";bd.width=C*cs*d;bd.height=R*cs*d;bx.setTransform(d,0,0,d,0,0);window.OF=pic.getBoundingClientRect().left-rd.getBoundingClientRect().left;drawSea()}
 function drawSea(){const cv=$("sea"),d=window.devicePixelRatio||1,w=innerWidth,h=innerHeight;cv.width=w*d;cv.height=h*d;const g=cv.getContext('2d');g.setTransform(d,0,0,d,0,0);
  g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=2;g.lineCap='round';
