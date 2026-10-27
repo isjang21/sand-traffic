@@ -338,7 +338,7 @@ mk('금붕어','ckmoygbrnie',(g,C,h)=>{const{E,O,T,L,sm,eye}=h;g.fillStyle=C.c;g
  const kelp=(x,h,am,ph,w)=>{const pts=[];for(let t=0;t<=1.001;t+=.04)pts.push([x+Math.sin(t*Math.PI*2.4+ph)*am*(.35+t*.65),188-h*t]);const pa=()=>{g.beginPath();pts.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]))};g.lineCap='round';g.lineJoin='round';pa();g.lineWidth=w+6;g.strokeStyle=C.k;g.stroke();pa();g.lineWidth=w;g.strokeStyle=C.g;g.stroke();[.35,.62].forEach((t,j)=>{const q=pts[Math.round(t*25)],d=j?-1:1;g.beginPath();g.ellipse(q[0]+d*9,q[1]-3,9,4.5,d*-.7,0,7);g.fillStyle=C.g;g.fill();g.lineWidth=3.5;g.strokeStyle=C.k;g.stroke()})};
  kelp(16,118,10,0,8);kelp(40,86,9,1.6,8);kelp(64,52,7,3.1,7);kelp(246,56,8,.8,7);kelp(230,38,6,2.4,6);
  O(204,188,15,9,C.e);O(76,190,12,8,C.n);
- {const sx=168,sy=184,pt=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?5:12;pt.push(sx+Math.cos(a)*r,sy+Math.sin(a)*r)}T(pt,C.i);E(sx,sy,2.2,2.2,C.m)}
+ {const sx=166,sy=182,pt=[];for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=i%2?8:17;pt.push(sx+Math.cos(a)*r,sy+Math.sin(a)*r)}g.beginPath();g.moveTo(pt[0],pt[1]);for(let i=2;i<pt.length;i+=2)g.lineTo(pt[i],pt[i+1]);g.closePath();g.fillStyle=C.i;g.fill();g.lineWidth=3;g.lineJoin='round';g.strokeStyle=C.k;g.stroke();E(sx,sy,2.5,2.5,C.m)}
  g.beginPath();g.moveTo(168,98);g.bezierCurveTo(198,64,230,54,238,70);g.bezierCurveTo(222,92,222,106,238,126);g.bezierCurveTo(226,138,196,128,168,98);g.fillStyle=C.r;g.fill();g.lineWidth=5;g.lineJoin='round';g.strokeStyle=C.k;g.stroke();
  T([104,80,128,40,152,78],C.r);L([121,47,120,59],3.5);L([134,47,137,59],3.5);O(116,100,58,40,C.o);E(112,118,38,15,C.y);T([128,102,154,112,128,122],C.r);
  L([174,97,226,69],4);L([174,99,216,99],4);L([174,101,226,129],4);
@@ -541,8 +541,7 @@ function drawCar(c){const [dx,dy]=V[c.d],h=hz(c),pad=cs*.06;
  const hull=dy=>{bx.beginPath();bx.moveTo(x0+hw*.25,ys+dy);bx.lineTo(x1-hw*.55,ys+dy);bx.quadraticCurveTo(x1-hw*.1,ys+dy+hw*.12,x1,ys+dy+hw/2);bx.quadraticCurveTo(x1-hw*.1,ys+dy+hw*.88,x1-hw*.55,ys+dy+hw);bx.lineTo(x0+hw*.25,ys+dy+hw);bx.quadraticCurveTo(x0,ys+dy+hw,x0,ys+dy+hw/2);bx.quadraticCurveTo(x0,ys+dy,x0+hw*.25,ys+dy);bx.closePath()};
  bx.fillStyle="rgba(0,40,80,.28)";hull(3);bx.fill();
  bx.fillStyle=COL[c.k];hull(0);bx.fill();bx.lineWidth=c.k=='k'?1.6:1.3;bx.strokeStyle=c.k=='k'?'rgba(255,255,255,.65)':'rgba(5,35,70,.7)';bx.stroke();
- bx.fillStyle='rgba(255,255,255,.3)';bx.beginPath();bx.roundRect(x0+hw*.2,ys+hw*.2,Math.max(hw*.3,x1-x0-hw*1.05),hw*.6,hw*.2);bx.fill();
- 
+  
  const bc=(x0+x1)/2,s=cs*.22;bx.fillStyle="#fff";bx.strokeStyle="rgba(30,30,50,.85)";bx.lineWidth=2;bx.beginPath();bx.moveTo(bc+s*1.3,0);bx.lineTo(bc-s*.4,-s);bx.lineTo(bc-s*.4,s);bx.closePath();bx.fill();bx.stroke();
  
  bx.restore()}
@@ -569,10 +568,8 @@ function drawRoad(){const sw=PW/5;rx2.clearRect(0,0,rw,rh);
  [...queue,...out].forEach(c=>{const {bwd,cab,len,x}=T(c),h=11,y=rh/2/K-5.5,col=COL[c.k],pct=c.cap?Math.floor(c.vis/c.cap*100):100;rx2.globalAlpha=c.fa===undefined?1:Math.min(1,c.fa);rx2.save();rx2.translate(c.rx*rw,0);rx2.scale(K,K);rx2.translate(-c.rx*rw,Math.sin(performance.now()/280+c.rx*8)*.9);
   if(c.vis>0){const p=Math.min(1,c.vis/c.cap),fh=4*p+1,eh=fh*.55;rx2.fillStyle=col;rx2.beginPath();rx2.moveTo(x+3,y);rx2.lineTo(x+3,y-eh);rx2.quadraticCurveTo(x+3+bwd/2,y-2*fh+eh,x+3+bwd,y-eh);rx2.lineTo(x+3+bwd,y);rx2.closePath();rx2.fill();rx2.stroke()}
   rx2.beginPath();rx2.moveTo(x,y+1);rx2.lineTo(x+len-1,y+1);rx2.quadraticCurveTo(x+len+5,y+3,x+len-4,y+h+2);rx2.lineTo(x+5,y+h+2);rx2.quadraticCurveTo(x-1,y+h,x,y+1);rx2.closePath();rx2.fillStyle=col;rx2.fill();rx2.stroke();
-  rx2.fillStyle='rgba(0,0,0,.22)';rx2.beginPath();rx2.roundRect(x+3,y+2,bwd,h-5,2);rx2.fill();
-  rx2.fillStyle='#fff';rx2.beginPath();rx2.roundRect(x+bwd+7,y-3,cab-2,7,[2,3,0,0]);rx2.fill();rx2.stroke();
-  rx2.fillStyle='#8fd3ff';rx2.fillRect(x+bwd+9,y-1,cab*.45,2.5);
-  rx2.fillStyle='rgba(255,255,255,.9)';rx2.beginPath();rx2.ellipse(x+len/2,y+h+2.5,len*.62,1.6,0,0,7);rx2.fill();
+  rx2.fillStyle=col;rx2.beginPath();rx2.roundRect(x+bwd+7,y-3,cab-2,7,[2,3,0,0]);rx2.fill();rx2.stroke();
+  rx2.fillStyle='rgba(0,0,0,.35)';rx2.fillRect(x+bwd+9,y-1,cab*.45,2.5);
   rx2.restore();const cx=x+len/2;rx2.font='800 6px system-ui,sans-serif';rx2.textAlign='center';rx2.lineWidth=1.5;rx2.strokeStyle='#2b2f3a';rx2.strokeText(pct+'%',cx,rh-3);rx2.fillStyle='#fff';rx2.fillText(pct+'%',cx,rh-3);rx2.lineWidth=1.4;rx2.strokeStyle='rgba(20,25,40,.55)';rx2.globalAlpha=1});
  for(const p of parts){const q=T(p.c),k=Math.min(1,p.t/p.d),tx=p.c.rx*rw+(q.x+3+p.u*q.bwd-p.c.rx*rw)*K,xx=p.x+(tx-p.x)*k,yy=-2+9*k*k;rx2.fillStyle=COL[p.c.k];rx2.fillRect(xx-1.5,yy-1.5,3,3)}}
 function drawRoadOld(){const sw=rw/5;rx2.clearRect(0,0,rw,rh);
