@@ -661,8 +661,8 @@ $("it_s").onclick=()=>openShop('s');
 $("sa").onclick=()=>openShop('p');
 function showStuck(){paused=true;$("evt").innerHTML="🚧 선착장 자리가 부족해요";$("ev1").textContent="🪙 100 코인으로 선착장 +1 (보유 "+coins+")";$("ev2").textContent="📺 광고 보고 선착장 +1";$("ev").style.display="flex"}
 function resume(){MAXS++;idle=0;queue.forEach(c=>c.laps=0);paused=false;$("ev").style.display="none";refresh()}
-$("ev1").onclick=()=>{if(MAXS>=8){$("ev1").textContent="더 늘릴 수 없어요"}else if(coins<100){$("ev1").textContent="코인이 부족해요 (보유 "+coins+")"}else{coins-=100;resume()}};
-$("ev2").onclick=()=>{if(MAXS>=8){$("ev2").textContent="더 늘릴 수 없어요";return}fakeAd('rew',ok=>{if(ok)resume();else gtoast("광고를 끝까지 봐야 보상을 받아요")})};
+$("ev1").onclick=()=>{if(coins<100){$("ev1").textContent="코인이 부족해요 (보유 "+coins+")"}else{coins-=100;resume()}};
+$("ev2").onclick=()=>{fakeAd('rew',ok=>{if(ok)resume();else gtoast("광고를 끝까지 봐야 보상을 받아요")})};
 $("ev3").onclick=()=>{$("ev").style.display="none";start()};
 let pendC=0,lastInt=0;const INT_GAP=0;
 function fakeAd(kind,done){const rw=kind=='rew',x=$("adx"),T=rw?5:3;let n=T,fin=false;
