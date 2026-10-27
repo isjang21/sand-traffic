@@ -189,7 +189,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 @keyframes clpop{0%{transform:scale(.3) rotate(-8deg);opacity:0}100%{transform:none;opacity:1}}
 .cls{font-size:19px;line-height:1.6;font-weight:800}
 .cls .ti{width:20px;height:20px;vertical-align:-4px}
-#cl .ti{width:20px;height:20px}
+#cl .ti{width:20px;height:20px}.ci{display:inline-block;width:1.1em;height:1.1em;vertical-align:-.2em;flex:none;margin:0 .1em}
 #cl{min-width:150px;padding:9px 20px;font-size:19px;border-radius:24px;border:3px solid #fff;background:linear-gradient(#ff90b8,#ff6196);color:#fff;text-shadow:0 2px 0 rgba(150,30,80,.65);box-shadow:0 0 20px rgba(255,122,168,.7),0 6px 0 #c9487a;animation:pls 1.6s ease-in-out infinite;display:none;align-items:center;justify-content:center;gap:6px}
 #adx{position:fixed;inset:0;z-index:100001;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:linear-gradient(160deg,#243b6b,#5b2a6e);color:#fff;text-align:center;padding:24px}
 #adk{position:absolute;left:14px;top:14px;background:rgba(0,0,0,.45);padding:4px 10px;border-radius:8px;font-size:13px;font-weight:800}
@@ -1267,7 +1267,7 @@ function islDraw(dt){const g=isG,gm=islGeo(),{cx,cy,rx,ry}=gm,tt=performance.now
   g.save();g.translate(a.x,a.y-a.hop+by2);g.scale(a.face,1);g.drawImage(a.sp,-w/2,-h,w,h);g.restore();
   if(a.say>0){a.say-=dt;const tn=tr(ANIM[a.i].n);g.font='800 13px system-ui,sans-serif';const tw=g.measureText(tn).width+16;g.fillStyle='rgba(255,255,255,.92)';g.beginPath();g.roundRect(a.x-tw/2,a.y-h-a.hop-30,tw,22,11);g.fill();g.fillStyle='#1d5c52';g.textAlign='center';g.textBaseline='middle';g.fillText(tn,a.x,a.y-h-a.hop-19)}}
  for(let k=isP.length-1;k>=0;k--){const p=isP[k];p.t+=dt;if(p.t>=p.d){isP.splice(k,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;g.globalAlpha=1-p.t/p.d;
-  if(p.k=='h'){g.font=p.s+'px serif';g.textAlign='center';g.textBaseline='middle';g.fillStyle='#ff5c93';g.fillText('♥',p.x,p.y)}else{g.font='800 18px system-ui,sans-serif';g.fillStyle='#fff';g.strokeStyle='rgba(0,70,110,.6)';g.lineWidth=4;g.textAlign='center';g.strokeText(p.s,p.x,p.y);g.fillText(p.s,p.x,p.y)}g.globalAlpha=1}}
+  if(p.k=='h'){g.font=p.s+'px serif';g.textAlign='center';g.textBaseline='middle';g.fillStyle='#ff5c93';g.fillText('♥',p.x,p.y)}else{g.font='800 18px system-ui,sans-serif';g.fillStyle='#fff';g.strokeStyle='rgba(0,70,110,.6)';g.lineWidth=4;g.textAlign='center';let ps=p.s,cx0=null;if(ps.startsWith('🪙')){ps=ps.replace('🪙 ','');cx0=p.x-g.measureText(ps).width/2-13}g.strokeText(ps,p.x,p.y);g.fillText(ps,p.x,p.y);if(cx0!==null){g.lineWidth=2;g.fillStyle='#ffc83d';g.strokeStyle='#c98a0b';g.beginPath();g.arc(cx0,p.y-6,8,0,6.3);g.fill();g.stroke();g.lineWidth=1.6;g.strokeStyle='#e39a12';g.beginPath();g.arc(cx0,p.y-6,4.6,0,6.3);g.stroke()}}g.globalAlpha=1}}
 $("isf").onclick=()=>{const cn=Object.keys(isl.in).length;if(isl.fed==todayS()||!cn)return;isl.fed=todayS();const rw=10*cn;coins+=rw;refresh();save();sfxPop(660);vib(25);
  isAn.forEach((a,k)=>{a.hv=110;setTimeout(()=>{for(let q=0;q<3;q++)heart(a.x+(Math.random()-.5)*30,a.y-a.sp.height*isSc,1)},k*90)});
  isP.push({x:isW/2,y:isH*.36,vy:-22,vx:0,t:0,d:1.8,s:'🪙 +'+rw,k:'t'});islHead()};
@@ -1308,11 +1308,13 @@ function tr(s){if(LANG=='ko')return s;const li=LANGS.indexOf(LANG)-1,m=s.match(/
  const o=TRD[c];if(o)return m[1]+o[li]+m[3];
  for(const r of TRP){const q=c.match(r[0]);if(q)return m[1]+r[li+1].replace(/\{(\d)\}|\$(\d)/g,(_,a,b)=>a?tr(q[a]||''):q[b])+m[3]}
  return s}
-function trNode(n){const cur=n.data;let src;if(n.__t!==undefined&&n.__t===cur)src=n.__ko;else{src=cur;n.__ko=cur}const out=LANG=='ko'?src:tr(src);n.__t=out;if(out!==cur)n.data=out}
+const COIN_SVG='<svg class="ci" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffc83d" stroke="#c98a0b" stroke-width="1.8"/><circle cx="12" cy="12" r="6.3" fill="none" stroke="#e39a12" stroke-width="1.8"/><path d="M9.2 9.4a4 4 0 0 1 2.6-1.4" stroke="#fff" stroke-width="1.6" fill="none"/></svg>';
+function coinSplit(n){const p=n.parentNode;if(!p||n.data.indexOf('🪙')<0)return;const t=p.tagName;if(t=='SCRIPT'||t=='STYLE'||t=='TEXTAREA'||t=='TITLE'||t=='OPTION')return;const parts=n.data.split('🪙');n.data=parts[0];n.__ko=n.__t=n.data;let ref=n;for(let i=1;i<parts.length;i++){const w=document.createElement('span');w.innerHTML=COIN_SVG;const sv=w.firstChild;p.insertBefore(sv,ref.nextSibling);const tx=document.createTextNode(parts[i]);tx.__ko=tx.__t=parts[i];p.insertBefore(tx,sv.nextSibling);ref=tx}}
+function trNode(n){const cur=n.data;let src;if(n.__t!==undefined&&n.__t===cur)src=n.__ko;else{src=cur;n.__ko=cur}const out=LANG=='ko'?src:tr(src);n.__t=out;if(out!==cur)n.data=out;if(out.indexOf('🪙')>=0)coinSplit(n)}
 function trAttrs(el){if(!el.hasAttribute)return;for(const a of['placeholder','aria-label']){if(!el.hasAttribute(a))continue;const k='__ka'+a,kt=k+'t',cur=el.getAttribute(a);if(el[k]===undefined||el[kt]!==cur)el[k]=cur;const o=LANG=='ko'?el[k]:tr(el[k]);el[kt]=o;if(cur!==o)el.setAttribute(a,o)}}
 function trWalk(root){if(root.nodeType==3){trNode(root);return}if(root.nodeType!=1)return;const t=root.tagName;if(t=='SCRIPT'||t=='STYLE'||t=='TEXTAREA')return;trAttrs(root);const w=document.createTreeWalker(root,5);let n;while(n=w.nextNode()){if(n.nodeType==3){const p=n.parentNode&&n.parentNode.tagName;if(p!='SCRIPT'&&p!='STYLE'&&p!='TITLE')trNode(n)}else trAttrs(n)}}
 new MutationObserver(ms=>{for(const m of ms){if(m.type=='characterData'){if(m.target.nodeType==3)trNode(m.target)}else m.addedNodes.forEach(n=>trWalk(n))}}).observe(document.body,{childList:true,subtree:true,characterData:true});
-function setLang(l){LANG=l;try{localStorage.setItem('sp.lang',l)}catch(e){}document.documentElement.lang=l;trWalk(document.body);lgDraw()}
+function setLang(l){LANG=l;try{localStorage.setItem('sp.lang',l);save();location.reload();return}catch(e){}document.documentElement.lang=l;trWalk(document.body);lgDraw()}
 function lgDraw(){const b=$("lgs");if(!b)return;b.innerHTML='';LANGS.forEach(l=>{const x=document.createElement('button');x.className='sbtn';x.style.cssText='flex:1;min-width:70px;'+(l==LANG?'background:#1f8f7a;color:#fff':'');x.textContent=LNAME[l];x.onclick=()=>setLang(l);b.appendChild(x)})}
 lgDraw();document.documentElement.lang=LANG;trWalk(document.body);
 
