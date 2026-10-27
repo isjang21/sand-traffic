@@ -458,7 +458,7 @@ const OLD=[
  {n:"꽃",r:["....kkkk....","...kkkkkk...",".kkkkyykkkk.","kkkkyyyykkkk",".kkkkyykkkk.","...kkkkkk...","....kkkk....",".....gg.....",".....gg.....","..gggggg...."]},
  {n:"집",r:[".....rr.....","....rrrr....","...rrrrrr...","..rrrrrrrr..",".rrrrrrrrrr.",".oooooooooo.",".ooobboooooo",".ooobbooggoo",".ooobbooggoo"]}
 ];
-const COL={r:"#e53935",o:"#f57c00",y:"#ffe81a",g:"#2e9d46",c:"#29b6f6",b:"#1e4fd8",p:"#a020d0",e:"#c4c9d2",k:"#23232b",n:"#8a5a2b",i:"#ff86b8",m:"#fff1d6"};
+const COL={r:"#e53935",o:"#f57c00",y:"#ffe81a",g:"#2e9d46",c:"#29b6f6",b:"#1e4fd8",p:"#a020d0",e:"#c4c9d2",k:"#23232b",n:"#8a5a2b",i:"#ff86b8",m:"#fffaf0"};
 const SY={r:"●",o:"■",y:"▲",g:"◆",c:"★",b:"✚"};
 let R=10;const C=17,V={U:[0,-1],D:[0,1],L:[-1,0],R:[1,0]},DUR=0.9;let MAXS=5,coins=300,items={t:1,m:1,s:1},mode=null;
 let lv=0,cars=[],px={},W=0,H=0,sand=[],out=[],pend=[],parts=[],lost=false,idle=0,paused=false,gt=0,gf=0,fr=0,dirty=new Set(),fx=[],lastS=0,ft=0,RT=1,boostG=1,boostS=1,RL=1.5,thaw=false,DA=1,DB=1,DCY=0,queue=[],job=null,won=false,cs=40,tot=0,pc=0;
@@ -500,7 +500,7 @@ function start(){pendC=0;setTrack((wld?wld.j:lv)%3);
  sand=[];{const cv=document.createElement('canvas');cv.width=W*4;cv.height=H*4;const g=cv.getContext('2d');g.fillStyle=COL.c;g.fillRect(0,0,W*4,H*4);g.scale(W*4/260,H*4/200);art.d(g,art.fx?COL:Object.assign({},COL,{k:COL.e,h:COL.o,l:COL.g}));const d0=g.getImageData(0,0,W*4,H*4).data,d=new Uint8ClampedArray(W*H*4);for(let i=0;i<W*H;i++){const j=((((i/W)|0)*4+2)*W*4+(i%W)*4+2)*4;d[i*4]=d0[j];d[i*4+1]=d0[j+1];d[i*4+2]=d0[j+2]}const _u=0,ks=(art.k||'roygcbpe').split('');for(let i=0;i<W*H;i++){let b='w',e0=1e9;for(const k of ks){const q=RGB[k],e=(d[i*4]-q[0])**2+(d[i*4+1]-q[1])**2+(d[i*4+2]-q[2])**2;if(e<e0){e0=e;b=k}}sand[i]=b}decorate();for(let i=0;i<W*H;i++)(px[sand[i]]=px[sand[i]]||[]).push(i)}
  tot=W*H;pc=0;
  fit();R=Math.max(10,Math.min(26,Math.floor($("bw").clientHeight/($("bw").clientWidth/C))));const n=Math.min(80,Math.round(C*R*(.25+(wld?(wld.w.dif||10)+wld.j:lv)*.01)));cars=gen(n);
- const ks=Object.keys(px),cnt={};ks.forEach(k=>cnt[k]=px[k].length>=24?2:1);let sm0=ks.reduce((q,k)=>q+cnt[k],0);if(sm0>cars.length){ks.forEach(k=>cnt[k]=1);sm0=ks.length}
+ const ks=Object.keys(px),cnt={};ks.forEach(k=>cnt[k]=px[k].length>=12?2:1);let sm0=ks.reduce((q,k)=>q+cnt[k],0);if(sm0>cars.length){ks.forEach(k=>cnt[k]=1);sm0=ks.length}
  for(let i=sm0;i<cars.length;i++){let b=ks[0];ks.forEach(k=>{if(px[k].length/cnt[k]>px[b].length/cnt[b])b=k});cnt[b]++}
  const list=[];ks.forEach(k=>{for(let i=0;i<cnt[k];i++)list.push(k)});
  for(let i=list.length-1;i>0;i--){const j=rnd(i+1);[list[i],list[j]]=[list[j],list[i]]}
