@@ -278,7 +278,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
 .ipb{display:flex;gap:6px}.ipb button{height:36px;padding:0 10px;border-radius:12px;border:0;background:#2f93c4;color:#fff;font-weight:900;font-size:13px;box-shadow:0 3px 0 #1d6b94;white-space:nowrap}
 .ipb button.dis{background:#b8c9cf;box-shadow:0 3px 0 #8da0a6}
 .ipe{text-align:center;padding:26px 10px;opacity:.7;font-weight:800}
-#dgre{height:44px;padding:0 24px;border-radius:999px;border:3px solid #fff;background:linear-gradient(#4fd8b0,#27b061);color:#fff;font-weight:900;font-size:16px;box-shadow:0 4px 0 #1b7f45}
+#dgdx{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;width:44px;height:44px;border-radius:50%;border:3px solid #fff;background:#e5484d;color:#fff;font-size:20px;font-weight:900;box-shadow:0 3px 0 #a52a2e;line-height:1;padding:0}#dgre{height:44px;padding:0 24px;border-radius:999px;border:3px solid #fff;background:linear-gradient(#4fd8b0,#27b061);color:#fff;font-weight:900;font-size:16px;box-shadow:0 4px 0 #1b7f45}
 </style></head><body>
 <canvas id="sea"></canvas><div id="bubs"></div><div id="app">
  <div id="tp"><button id="hb" aria-label="홈">🏠</button><span id="lv"></span><span id="co"></span></div>
@@ -293,7 +293,7 @@ button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:7px 14px
  <div id="is"><div id="ish"><b>🏝 내 섬</b><span id="isk"></span></div><div id="izr"><div id="izt"></div><span id="ish2"></span></div><canvas id="isc"></canvas><div id="ism"></div><div id="isb"><button id="isf">🍖 먹이 주기</button><button id="isv">🏠 친구 이주</button></div></div>
  <div id="ip"><div id="ipb2"><div id="ipt"><b>친구 이주</b><span id="iph"></span><button id="ipx">✕</button></div><div id="ipn">하트 10개 또는 코인으로 친구를 섬에 데려와요</div><div id="ipl"></div></div></div>
  <div id="dg"><div id="dgh"><b>📖 친구 도감</b><span id="dgh2"></span><button id="dgx">✕</button></div><div id="dgt"></div><div id="dgp"><i></i></div><div id="dgc"></div><div id="dgg"></div><div id="dgl" style="display:none"></div><button id="dgr" style="display:none">기록 초기화</button></div>
- <div id="dgd"><canvas width="130" height="100"></canvas><div id="dgn"></div><div id="dgi"></div><button id="dgre">다시 하기 ▶</button><small>화면을 누르면 닫혀요</small></div>
+ <div id="dgd"><canvas width="130" height="100"></canvas><div id="dgn"></div><div id="dgi"></div><button id="dgdx" aria-label="닫기">✕</button></div>
  <div id="pz"><div id="pzb"><div id="pzt">일시정지</div><button id="pzx">✕</button><div id="pzs"><button id="pm">🎵</button><button id="pv">🔊</button></div><div id="pzr"><button id="pe">종료</button><button id="pc2">계속</button></div></div></div>
  <div id="sh"><div id="shh"><b>상점</b><span id="shc"></span></div><div id="shl"></div></div>
  <div id="wl"><div class="wh"><b>항해 지도</b><span id="wlc" style="font-weight:800"></span></div><div class="wsub">배를 타고 바다 곳곳의 섬 친구들을 구하러 가요</div><div id="wls"></div></div>
@@ -1007,13 +1007,13 @@ function drawDg(){const n=gotN();$("dgt").innerHTML="";TABS.forEach((t,i)=>{cons
    const c=document.createElement('canvas');c.width=130;c.height=100;c.getContext('2d').drawImage(artCv(i),0,0);d.appendChild(c);
    if(!ok){d.classList.remove('lk');if(i==lv||i==lv+1){c.getContext('2d').clearRect(0,0,130,100);c.getContext('2d').drawImage(silCv(i),0,0)}else{const q=document.createElement('div');q.className='q';q.textContent='?';d.appendChild(q);c.style.filter='brightness(0) opacity(.5)'}}
    const nm=document.createElement('div');nm.className='nm';nm.textContent=ok?a.n:'???';d.appendChild(nm);const st=document.createElement('div');st.className='st';st.textContent=ok?('좋아하는 것: '+(FAV[a.n]||'')):(i==lv?'도전 중 ▶':'좋아하는 것: ???');d.appendChild(st);
-   if(ok)d.onclick=()=>{const cv=$("dgd").querySelector('canvas'),x=cv.getContext('2d');blinkOn(cv,i,()=>$("dgd").style.display!="none");$("dgn").textContent=a.n;$("dgi").innerHTML=(INTRO[i]||"")+'<br><span style="font-size:15px;opacity:.85">좋아하는 것: '+(FAV[a.n]||'')+'</span>';$("dgre").onclick=ev=>{ev.stopPropagation();replay(i)};$("dgd").style.display="flex"};
+   if(ok)d.onclick=()=>{const cv=$("dgd").querySelector('canvas'),x=cv.getContext('2d');blinkOn(cv,i,()=>$("dgd").style.display!="none");$("dgn").textContent=a.n;$("dgi").innerHTML=(INTRO[i]||"")+'<br><span style="font-size:15px;opacity:.85">좋아하는 것: '+(FAV[a.n]||'')+'</span>';$("dgd").style.display="flex"};
    g.appendChild(d)}}
  else{g.style.display="none";l.style.display="block";$("dgp").firstChild.style.width=(n>=PETN?100:0)+"%";$("dgc").textContent="";l.innerHTML=(n<PETN?"🔒<br>애완동물 10종을 모두 모으면 열려요<br><small>("+n+" / "+PETN+")</small>":"✨ 새 도감 준비 중이에요<br><small>곧 만나요!</small>")}
  $("dgr").textContent="기록 초기화";rstArm=0}
 $("dgb").onclick=()=>{refresh();drawDg();$("dg").style.display="flex"};
 $("dgx").onclick=()=>{showHome()};
-$("dgd").onclick=()=>{$("dgd").style.display="none"};
+$("dgdx").onclick=()=>{$("dgd").style.display="none"};
 $("dgr").onclick=()=>{if(!rstArm){rstArm=1;$("dgr").textContent="정말 지울까요? 한 번 더 누르세요";setTimeout(()=>{if(rstArm){rstArm=0;$("dgr").textContent="기록 초기화"}},3500)}else{resetAll()}};
 let blinkTk=0;
 function blinkOn(cv,i,alive){const my=++blinkTk,x=cv.getContext('2d'),dr=b=>x.drawImage(artCv(i,b),0,0);dr(false);
