@@ -1296,6 +1296,7 @@ function spGo(){if($("sp").style.display=="none")return;$("sp").style.display="n
 $("sp").onclick=e=>{if(!spReady||e.target.id=='spi')return;spGo()};
 setTimeout(()=>{if($("sp").style.display!="none")spGo()},2100);
 try{startMusic()}catch(e){}
+{let tries=0;const iv=setInterval(()=>{try{if(AC&&AC.state=="running"||++tries>40){clearInterval(iv);return}startMusic()}catch(e){}},500)}
 {const un=()=>{try{startMusic();if(AC&&AC.state=='running'){["pointerdown","pointerup","touchend","click","keydown"].forEach(t=>document.removeEventListener(t,un,true))}}catch(e){}};["pointerdown","pointerup","touchend","click","keydown"].forEach(t=>document.addEventListener(t,un,true))}
 
 // ---- i18n
