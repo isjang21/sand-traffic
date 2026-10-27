@@ -948,12 +948,12 @@ addEventListener("resize",fit);
 const SK='sandTraffic.v1';let got={},svT=0;
 let vibOn=true,att={n:0,last:''},lastSaveT=0;
 function storageOK(){try{const k='sp.test';localStorage.setItem(k,'1');const r=localStorage.getItem(k)==='1';localStorage.removeItem(k);return r}catch(e){return false}}
-function mkJ(){return JSON.stringify({lv:(won&&!lost&&!wld)?lv+1:lv,coins,items,got,muted,musicOn,vibOn,att,wown,wp,t:Date.now()})}
+function mkJ(){return JSON.stringify({lv:(won&&!lost&&!wld)?lv+1:lv,coins,items,got,muted,musicOn,vibOn,att,wown,wp,ord:1,t:Date.now()})}
 function save(){const j=mkJ();try{localStorage.setItem(SK,j);lastSaveT=Date.now()}catch(e){}clPush(j)}
 function saveSoon(){clearTimeout(svT);svT=setTimeout(save,250)}
 function load(){try{loadFrom(localStorage.getItem(SK))}catch(e){}}
 let localT=0;
-function loadFrom(str){const d=JSON.parse(str||'null');if(!d)return;lv=Math.max(0,d.lv|0);if(typeof d.coins=='number')coins=d.coins;items=Object.assign(items,d.items||{});got=d.got||{};wown=d.wown||{};wp=d.wp||{};muted=!!d.muted;musicOn=d.musicOn!==false;vibOn=d.vibOn!==false;if(d.att&&typeof d.att.n=='number')att={n:d.att.n|0,last:String(d.att.last||'')};localT=d.t|0}
+function loadFrom(str){const d=JSON.parse(str||'null');if(!d)return;lv=Math.max(0,d.lv|0);if(typeof d.coins=='number')coins=d.coins;items=Object.assign(items,d.items||{});got=d.got||{};if(!d.ord){const g2={};for(const q in got){if(/^\d+$/.test(q)&&+q<10){g2[ORD.indexOf(+q)]=got[q]}else g2[q]=got[q]}got=g2}wown=d.wown||{};wp=d.wp||{};muted=!!d.muted;musicOn=d.musicOn!==false;vibOn=d.vibOn!==false;if(d.att&&typeof d.att.n=='number')att={n:d.att.n|0,last:String(d.att.last||'')};localT=d.t|0}
 // cloud save (only inside the claude.ai viewer; per-account private)
 let CL=null,clJ=null,clT=0;
 function clPush(j){clJ=j;if(!CL)return;clearTimeout(clPush.t);clPush.t=setTimeout(async()=>{const x=clJ;try{await CL.set({j:x,t:JSON.parse(x).t})}catch(e){}},1500)}
@@ -987,6 +987,8 @@ let blinkTk=0;
 function blinkOn(cv,i,alive){const my=++blinkTk,x=cv.getContext('2d'),dr=b=>x.drawImage(artCv(i,b),0,0);dr(false);
  const loop=()=>{if(my!==blinkTk||!alive())return;setTimeout(()=>{if(my!==blinkTk||!alive())return;dr(true);setTimeout(()=>{if(my!==blinkTk)return;dr(false);if(Math.random()<.3)setTimeout(()=>{if(my!==blinkTk||!alive())return;dr(true);setTimeout(()=>{if(my!==blinkTk)return;dr(false);loop()},130)},170);else loop()},150)},1500+Math.random()*1800)};loop()}
 const INTRO=['방울 소리를 따라 살금살금 걷는 호기심 많은 친구','나비 넥타이를 맨 꼬리 흔들기 대장','당근을 좋아하는 폴짝폴짝 점프 선수','볼 가득 먹이를 모으는 부지런한 친구','한 번 들은 말은 따라 하는 수다쟁이','느릿느릿 헤엄치는 반짝이는 물속 친구','천천히 가도 끝까지 가는 든든한 친구','뾰족해 보여도 마음은 말랑말랑','삐약삐약 막 세상에 나온 노란 꼬마','비 오는 날 개굴개굴 노래하는 친구'];
+const ORD=[6,8,2,7,9,3,4,0,1,5];
+{const A=ANIM.slice(0,10),I=INTRO.slice(0,10);ORD.forEach((o,k)=>{ANIM[k]=A[o];INTRO[k]=I[o]})}
 function gtoast(t){const e=$("gt");e.textContent=t;e.style.display="block";clearTimeout(gtoast.t);gtoast.t=setTimeout(()=>e.style.display="none",1800)}
 function setTab(t){$("tb").style.display="grid";[...$("tb").children].forEach(b=>b.className=(+b.dataset.t==t)?"on":"")}
 function goTab(t){if(t==1){showHome();return}paused=true;wld=null;$("wi").style.display="none";$("wm").style.display="none";$("wl").style.display=t==3?"flex":"none";$("hm").style.display="none";$("dg").style.display=t==2?"flex":"none";$("sh").style.display=t==0?"flex":"none";if(t==2)drawDg();if(t==0)drawShop();if(t==3)drawWorlds();setTab(t)}
@@ -1059,7 +1061,7 @@ const OV={
 };
 function mkBreed(base,n,intro,sub,ov){const a=ANIM[base];return{n,i:intro,k:'ckmoniyrgebpc',fx:1,d:(g,C,bk)=>{const C2=Object.assign({},C);for(const q in sub)C2[q]=C[sub[q]];a.d(g,C2,bk);if(ov)ov(g,C)}}}
 const WORLDS=[
- {id:'cat',nm:'고양이 섬',ico:'🐱',lv:20,base:0,desc:'치즈, 샴, 러시안블루…\n고양이 10종을 모으는 20판짜리 모험',
+ {id:'cat',nm:'고양이 섬',ico:'🐱',lv:20,base:7,desc:'치즈, 샴, 러시안블루…\n고양이 10종을 모으는 20판짜리 모험',
   br:[['치즈냥이','햇볕 아래 낮잠을 제일 좋아하는 주황 줄무늬 친구',{o:'o',r:'r'}],
       ['러시안블루','은빛 털이 반짝이는 조용하고 우아한 친구',{o:'e',r:'b'}],
       ['터키시앙고라','솜털처럼 하얀 털을 가진 도도한 친구',{o:'m',r:'c'}],
@@ -1070,7 +1072,7 @@ const WORLDS=[
       ['스코티시폴드','줄무늬 털에 동글동글 귀여운 친구',{o:'e',r:'o'},OV.stripes('k')],
       ['페르시안','푹신푹신 구름 같은 털을 가진 귀족 친구',{o:'m',r:'p'},OV.headP('e','e')],
       ['먼치킨','짧은 다리로 총총 뛰는 양말 신은 친구',{o:'y',r:'b'},OV.feet('m')]]},
- {id:'dog',nm:'강아지 섬',ico:'🐶',lv:20,base:1,desc:'골든리트리버, 시바, 푸들…\n강아지 10종을 모으는 20판짜리 모험',
+ {id:'dog',nm:'강아지 섬',ico:'🐶',lv:20,base:8,desc:'골든리트리버, 시바, 푸들…\n강아지 10종을 모으는 20판짜리 모험',
   br:[['골든리트리버','다정하고 꼬리를 살랑살랑 흔드는 노란 친구',{y:'y',n:'o',o:'y',r:'r'}],
       ['시바견','쫑긋 귀에 도도한 미소를 가진 친구',{y:'o',n:'o',o:'m',r:'g'}],
       ['말티즈','하얀 솜사탕 같은 작고 귀여운 친구',{y:'m',n:'m',o:'m',r:'c'}],
