@@ -1295,7 +1295,8 @@ let spReady=false;$("spt").style.animationName='none';setTimeout(()=>{$("spt").s
 function spGo(){if($("sp").style.display=="none")return;$("sp").style.display="none";startMusic();showHome();stWarn();if(canAtt()&&spAuto){spAuto=false;openAt()}}
 $("sp").onclick=e=>{if(!spReady||e.target.id=='spi')return;spGo()};
 setTimeout(()=>{if($("sp").style.display!="none")spGo()},2100);
-document.addEventListener("pointerdown",()=>{try{startMusic()}catch(e){}},{once:true,capture:true});
+try{startMusic()}catch(e){}
+{const un=()=>{try{startMusic();if(AC&&AC.state=='running'){["pointerdown","pointerup","touchend","click","keydown"].forEach(t=>document.removeEventListener(t,un,true))}}catch(e){}};["pointerdown","pointerup","touchend","click","keydown"].forEach(t=>document.addEventListener(t,un,true))}
 
 // ---- i18n
 const LANGS=['ko','en','es','ja'],LNAME={ko:'한국어',en:'English',es:'Español',ja:'日本語'};
