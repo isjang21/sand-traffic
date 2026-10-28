@@ -922,8 +922,9 @@ function musStep(t){const T=TRK[musTrack],bar=Math.floor(mstep/8)%4,b=mstep%8,ch
  if(T.stab.includes(b)){mnote(MN(ch[1]+k),t,T.sd,'triangle',.25);mnote(MN(ch[2]+k),t,T.sd,'triangle',.25)}
  if(T.kick&&b%4==0)kick(t);mstep++}
 function mtick(){if(!AC)return;if(!musicOn){mnt=AC.currentTime+.1;return}while(mnt<AC.currentTime+.5){musStep(mnt);mnt+=TRK[musTrack].dt}}
-function startMusic(){if(AC){if(AC.state=='suspended')AC.resume();return}try{AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.gain.value=.16;mg.connect(AC.destination);sg=AC.createGain();sg.gain.value=.5;sg.connect(AC.destination);loadHorn();sandInit();mnt=AC.currentTime+.1;setInterval(mtick,120);AC.resume()}catch(e){}}
+function startMusic(){if(AC){if(AC.state!='running')AC.resume();return}try{AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.gain.value=.16;mg.connect(AC.destination);sg=AC.createGain();sg.gain.value=.5;sg.connect(AC.destination);loadHorn();sandInit();mnt=AC.currentTime+.1;setInterval(mtick,120);AC.resume()}catch(e){}}
 document.addEventListener('pointerdown',startMusic);
+{const rs=()=>{try{if(AC&&AC.state!='running')AC.resume()}catch(e){}};['visibilitychange','focus','pageshow','touchend','click'].forEach(t=>document.addEventListener(t,rs,true));window.addEventListener('focus',rs);setInterval(rs,1500)}
 function truckSVG(){
  const dc=['#c58d3d','#f7e1a1','#e3b866','#b07a30'];let dots='';
  for(let i=0;i<150;i++){const x=-34+Math.random()*172,y=-100-70*Math.random();const t=(x+40)/190;const top=-104-62*Math.sin(Math.PI*Math.min(1,Math.max(0,t)))*.95-t*30;
