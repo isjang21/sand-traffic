@@ -669,7 +669,7 @@ function toast(t){const e=$("toast");e.textContent=t;e.style.display="block";cle
 function used(){return cars.filter(c=>c.s==1).length+queue.length+pend.length}
 bd.addEventListener("pointerdown",e=>{
  if(won)return;const r=bd.getBoundingClientRect(),i=Math.floor((e.clientY-r.top)/cs)*C+Math.floor((e.clientX-r.left)/cs);
- const idle=cars.filter(c=>c.s==0),c=idle.find(c=>cells(c).includes(i));if(!c)return;
+ const idle=cars.filter(c=>c.s==0),c=idle.find(c=>cells(c).includes(i));if(!c){if(mode=='t'||mode=='w'){if(mode=='w')cancelWind();else mode=null;toast('취소했어요')}return}
  if(mode=="w"){windGo(c);return}
  if(mode=="t"){if(used()>=MAXS){toast("선착장이 부족합니다.");sfxBlock();return}c.s=2;pend.push(c);mode=null;useItem("t");sfxVroom();return}
  const occ=new Set(idle.flatMap(cells));
@@ -750,7 +750,7 @@ const canTap=()=>{const ic=cars.filter(c=>c.s==0),occ=new Set(ic.flatMap(cells))
 let RCH=3;const matchY=(x,k)=>{let y=lowY(x);if(y<0)return -1;for(let n=0;y>=0&&n<RCH;y--){if(!sand[y*W+x]||frozenAt(x,y))continue;if(sand[y*W+x]==k)return y;n++}return -1};
 const hasEx=k=>{for(let x=0;x<W;x++){if(matchY(x,k)>=0)return true}return false};
 let last=performance.now();
-function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;if(paused){requestAnimationFrame(loop);return}
+function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;if(paused||mode=='t'||mode=='w'||$("cp").style.display=='flex'){requestAnimationFrame(loop);return}
  cars.forEach(c=>{if(c.sh>0)c.sh-=dt;if(c.s==1){c.m+=14*dt;if(c.m>=dist(c)){c.s=2;pend.push(c)}}});
  gt+=dt;let moved=false,took=false;RL=Math.max(1.9,MAXS*(2*trLen({L:4})+12)/rw);
  if(gt>1.5){gt=0;for(let x=0;x<W;x++)dirty.add(x)}
