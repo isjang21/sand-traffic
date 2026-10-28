@@ -418,9 +418,10 @@ mk('병아리','ckmoniyrg',(g,C,h)=>{const{E,O,T,L,sm,sky,eyes}=h;sky();
  if(!C.np)[[40,186],[62,178],[196,184],[222,178],[236,190]].forEach(p=>{E(p[0],p[1],6,3.5,C.o,.4)});}),
 mk('개구리','ckmgribyc',(g,C,h)=>{const{E,O,T,L,sm,cloud}=h;g.fillStyle=C.c;g.fillRect(0,0,260,200);cloud(50,30);cloud(210,36,.8);
  if(!C.np){E(130,200,200,70,C.b);
-  const pad=(x,y,a,b,n)=>{O(x,y,a,b,C.g);g.fillStyle=C.b;g.beginPath();g.moveTo(x,y);g.lineTo(x+n*a*1.05,y-b*.55);g.lineTo(x+n*a*1.05,y+b*.25);g.closePath();g.fill();g.lineWidth=2.5;g.strokeStyle=C.k;g.beginPath();g.moveTo(x+n*a*.92,y-b*.5);g.lineTo(x,y);g.lineTo(x+n*a*.92,y+b*.2);g.stroke()};
+  const T3=(x,y,a,b,f,r=0)=>{g.beginPath();g.ellipse(x,y,a,b,r,0,7);g.fillStyle=f;g.fill();g.lineWidth=3;g.strokeStyle=C.k;g.stroke()};
+  const pad=(x,y,a,b,n)=>{T3(x,y,a,b,C.g);g.fillStyle=C.b;g.beginPath();g.moveTo(x,y);g.lineTo(x+n*a*1.1,y-b*.6);g.lineTo(x+n*a*1.1,y+b*.3);g.closePath();g.fill()};
   pad(34,176,30,9,1);pad(228,184,30,9,-1);pad(130,188,80,17,-1);
-  const lo=(x,y,s)=>{L([x,y+10*s,x,y+22*s],3);O(x-13*s,y+2*s,7*s,12*s,C.i,-.7);O(x+13*s,y+2*s,7*s,12*s,C.i,.7);O(x-6*s,y-2*s,7*s,14*s,C.i,-.3);O(x+6*s,y-2*s,7*s,14*s,C.i,.3);O(x,y-6*s,7*s,15*s,C.i,0);E(x,y+4*s,5*s,3*s,C.y)};
+  const lo=(x,y,s)=>{T3(x-10*s,y+2*s,7*s,12*s,C.i,-.6);T3(x+10*s,y+2*s,7*s,12*s,C.i,.6);T3(x,y-4*s,8*s,15*s,C.i,0);E(x,y+8*s,5*s,3*s,C.y)};
   lo(34,148,1);lo(228,158,.85)}
  O(130,160,64,42,C.g);E(130,168,40,26,C.m);
  O(76,176,24,12,C.g);O(184,176,24,12,C.g);
