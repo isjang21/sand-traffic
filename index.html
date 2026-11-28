@@ -1822,6 +1822,30 @@ const TOYS=[{id:'fish',e:'🐟',n:'생선 인형',a:'고양이',z:0,sx:-.55,sy:.
 function toyOf(i){const n=ANIM[i].n;return TOYS.find(t=>t.a==n)}
 const sprC={};
 function spriteCv(i){if(sprC[i])return sprC[i];const _p=curPal;usePal(ANIM[i].n);try{return spriteCv0(i)}finally{usePal(_p)}}
+const SPRCLN={'생쥐':[['r',69,0,95,69],['c','g']],'돼지':[['c','g',0,70,78,84],['c','g',0,0,50,70],['p',58,44,78,64,1]],'강아지':[['r',0,58,26,77],['r',92,68,108,77],['r',102,64,108,70],['c','w',24,58,30,77],['c','g'],['c','R',70,30,108,77],['c','w',88,60,108,77]],'부엉이':[['r',0,74,30,82],['r',75,74,105,82],['r',0,79,105,82]],'기니피그':[['r',86,50,100,73],['c','g']],'개구리':[['r',0,0,26,80],['r',110,0,130,80],['r',0,78,130,80],['r',100,72,130,80],['c','b']],'게코':[['r',94,0,118,77],['c','g'],['c','R',0,70,25,77]],'다람쥐':[['r',0,0,41,100],['r',96,84,130,100],['c','g'],['c','b']],'장수풍뎅이':[['r',0,0,14,54],['r',70,0,78,54],['r',84,80,98,100],['c','g'],['c','br'],['t'],['c','k',0,60,20,74],['c','k',0,81,20,90],['c','k',64,61,100,74],['c','k',64,81,100,91]],'양':[['r',78,0,97,78],['c','g']],'당나귀':[['r',46,0,72,79],['c','g']],'문어':[['r',87,0,108,77],['c','y']],'친칠라':[['r',0,0,36,75],['r',115,0,130,75],['c','br'],['c','y']],'사슴':[['r',0,25,22,50],['r',62,28,76,47],['c','g'],['c','y']],'물개':[['r',24,0,56,19],['r',80,60,104,86],['c','b']],'달팽이':[['r',89,0,111,72],['r',0,63,111,72],['c','g']],'앵무새':[['r',96,0,126,100],['r',0,73,46,100],['r',74,73,126,100],['c','br']],'곰':[['c','g']],'고래':[['r',76,60,106,78],['c','b']]};
+const SPRCOL={w:(r,g,b)=>r>225&&g>225&&b>200,g:(r,g,b)=>g>r+25&&g>b+25,b:(r,g,b)=>b>r+50&&b>g+30,R:(r,g,b)=>r>180&&g<90&&b<90,y:(r,g,b)=>r>200&&g>190&&b<100,o:(r,g,b)=>r>200&&g>100&&g<175&&b<60,k:(r,g,b)=>r<70&&g<70&&b<80,br:(r,g,b)=>r>100&&r<175&&g>55&&g<115&&b>15&&b<75&&r>g+30&&g>b+10};
+function cleanSpr(o,name){const ops=SPRCLN[name];if(!ops)return o;const w=o.width,h=o.height,im=o.getContext('2d').getImageData(0,0,w,h),d=im.data;
+ for(const op of ops){let x0=0,y0=0,x1=w,y1=h,f=null,k=1;if(op[0]=='t'){for(let t=0;t<3;t++){const rm=[];for(let y=0;y<h;y++)for(let x=0;x<w;x++){const j=(y*w+x)*4;if(!d[j+3])continue;const L=x>0&&d[(y*w+x-1)*4+3],R=x<w-1&&d[(y*w+x+1)*4+3];if(!L&&!R)rm.push(j)}rm.forEach(j=>d[j+3]=0)}continue}
+  if(op[0]=='p'){const pj=(60*w+40)*4,pc=op[5]?[35,35,45]:[d[pj],d[pj+1],d[pj+2]],X0=op[1],Y0=op[2],X1=Math.min(w,op[3]),Y1=Math.min(h,op[4]);for(let y=Y0;y<Y1;y++)for(let x=X0;x<X1;x++){const j=(y*w+x)*4;if(d[j+3]&&(SPRCOL.g(d[j],d[j+1],d[j+2])||SPRCOL.y(d[j],d[j+1],d[j+2]))){if(op[5])d[j+3]=0;else{d[j]=pc[0];d[j+1]=pc[1];d[j+2]=pc[2]}}}
+  if(op[5])continue;
+  const seen=new Uint8Array(w*h),st=[];const pu=(x,y)=>{if(x<X0||y<Y0||x>=X1||y>=Y1)return;const q=y*w+x;if(seen[q]||d[q*4+3])return;seen[q]=1;st.push(q)};for(let x=X0;x<X1;x++){pu(x,Y0);pu(x,Y1-1)}for(let y=Y0;y<Y1;y++){pu(X0,y);pu(X1-1,y)}
+  while(st.length){const q=st.pop(),x=q%w,y=(q/w)|0;pu(x-1,y);pu(x+1,y);pu(x,y-1);pu(x,y+1)}
+  for(let y=Y0;y<Y1;y++)for(let x=X0;x<X1;x++){const q=y*w+x;if(!seen[q]&&!d[q*4+3]){d[q*4]=pc[0];d[q*4+1]=pc[1];d[q*4+2]=pc[2];d[q*4+3]=255}}continue}
+  if(op[0]=='r'){x0=op[1];y0=op[2];x1=op[3];y1=op[4]}else{f=SPRCOL[op[1]];if(op.length>2){x0=op[2];y0=op[3];x1=op[4];y1=op[5]}}
+  for(let y=Math.max(0,y0);y<Math.min(h,y1);y++)for(let x=Math.max(0,x0);x<Math.min(w,x1);x++){const j=(y*w+x)*4;if(!d[j+3])continue;if(!f||f(d[j],d[j+1],d[j+2]))d[j+3]=0}}
+ const lab=new Int32Array(w*h).fill(-1);let best=-1,bs=0,n=0;
+ for(let s0=0;s0<w*h;s0++){if(!d[s0*4+3]||lab[s0]>=0)continue;const st=[s0];lab[s0]=n;let c=0;while(st.length){const q=st.pop();c++;const x=q%w,y=(q/w)|0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const xx=x+dx,yy=y+dy;if(xx<0||yy<0||xx>=w||yy>=h)continue;const p=yy*w+xx;if(d[p*4+3]&&lab[p]<0){lab[p]=n;st.push(p)}}}if(c>bs){bs=c;best=n}n++}
+ let ax=w,ay=h,bx=0,by=0;for(let q=0;q<w*h;q++){if(lab[q]!==best)d[q*4+3]=0;else{const x=q%w,y=(q/w)|0;if(x<ax)ax=x;if(x>bx)bx=x;if(y<ay)ay=y;if(y>by)by=y}}
+ const ow=bx-ax+3,oh=by-ay+3,c2=document.createElement('canvas');c2.width=ow;c2.height=oh;const g2=c2.getContext('2d'),i2=g2.createImageData(ow,oh),D=i2.data;
+ for(let y=0;y<oh-2;y++)for(let x=0;x<ow-2;x++){const q=((y+ay)*w+x+ax)*4,j=((y+1)*ow+x+1)*4;if(d[q+3]){D[j]=d[q];D[j+1]=d[q+1];D[j+2]=d[q+2];D[j+3]=255}}
+ if(name=='장수풍뎅이'){for(let y=0;y<oh;y++)for(let x=0;x<ow;x++){const j=(y*ow+x)*4;if(D[j+3]&&(x<20||x>66)&&D[j]<70&&D[j+1]<70)D[j+3]=0}
+  const seg=(x0,y0,x1,y1)=>{const n=Math.max(Math.abs(x1-x0),Math.abs(y1-y0));for(let t=0;t<=n;t++){const cx=Math.round(x0+(x1-x0)*t/n),cy=Math.round(y0+(y1-y0)*t/n);for(let dy=-1;dy<=2;dy++)for(let dx=-1;dx<=2;dx++){const xx=cx+dx,yy=cy+dy;if(xx<0||yy<0||xx>=ow||yy>=oh)continue;const j=(yy*ow+xx)*4;D[j]=35;D[j+1]=35;D[j+2]=45;D[j+3]=255}}};
+  [[24,44,5,40],[21,62,4,62],[25,77,9,81],[60,44,79,40],[63,62,80,62],[59,77,75,81]].forEach(a=>seg(...a))}
+ let K=[35,35,45];for(let j=0;j<D.length;j+=4)if(D[j+3]&&D[j]<70&&D[j+1]<70&&D[j+2]<80){K=[D[j],D[j+1],D[j+2]];break}
+ const dk=j=>D[j]<70&&D[j+1]<70&&D[j+2]<80,add=[];
+ for(let y=0;y<oh;y++)for(let x=0;x<ow;x++){const j=(y*ow+x)*4;if(D[j+3])continue;let nb=false;[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{const xx=x+dx,yy=y+dy;if(xx<0||yy<0||xx>=ow||yy>=oh)return;const k=(yy*ow+xx)*4;if(D[k+3]&&!dk(k))nb=true});if(nb)add.push(j)}
+ add.forEach(j=>{D[j]=K[0];D[j+1]=K[1];D[j+2]=K[2];D[j+3]=255});
+ g2.putImageData(i2,0,0);return c2}
 function spriteCv0(i){if(sprC[i])return sprC[i];const src=artCv(i,false,true),W0=130,H0=100,d=src.getContext('2d').getImageData(0,0,W0,H0).data,K=RGB.k;
  const isK=q=>d[q*4]==K[0]&&d[q*4+1]==K[1]&&d[q*4+2]==K[2],bg=new Uint8Array(W0*H0),st=[],bar=new Uint8Array(W0*H0);
  for(let q=0;q<W0*H0;q++)if(isK(q)){const x=q%W0,y=(q/W0)|0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const xx=x+dx,yy=y+dy;if(xx>=0&&yy>=0&&xx<W0&&yy<H0)bar[yy*W0+xx]=1}}
@@ -1837,7 +1861,7 @@ function spriteCv0(i){if(sprC[i])return sprC[i];const src=artCv(i,false,true),W0
  let x0=W0,y0=H0,x1=0,y1=0;for(let q=0;q<W0*H0;q++)if(kp(q)){const x=q%W0,y=(q/W0)|0;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
  const w=x1-x0+1,h=y1-y0+1,o=document.createElement('canvas');o.width=w;o.height=h;const og=o.getContext('2d'),im=og.createImageData(w,h);
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const q=(y+y0)*W0+x+x0;if(kp(q)){const j=(y*w+x)*4;im.data[j]=d[q*4];im.data[j+1]=d[q*4+1];im.data[j+2]=d[q*4+2];im.data[j+3]=255}}
- og.putImageData(im,0,0);return sprC[i]=o}
+ og.putImageData(im,0,0);return sprC[i]=cleanSpr(o,ANIM[i].n)}
 let isAn=[],isP=[],isRun=false,isLast=0,isCv,isG,isW=0,isH=0,isDpr=1,isSc=1,isZ=0;const isSt={};
 const zoneN=()=>Object.keys(isl.in).filter(k=>isl.in[k]&&zoneOf(+k)==isZ).length;
 function islGeo(){if(isZ==0)return{cx:isW/2,cy:isH*.76,rx:isW*.5,ry:isH*.13};if(th(isZ)!=2)return{cx:isW/2,cy:isH*.64,rx:isW*.44,ry:isH*.25};return{cx:isW/2,cy:isH*.42,rx:isW*.4,ry:isH*.2}}
